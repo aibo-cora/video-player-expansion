@@ -13,13 +13,14 @@ import Combine
 
 struct CustomVideoPlayer: UIViewRepresentable {
     let player: AVPlayer
-    let size: CGSize
     
-    func makeUIView(context: Context) -> UIView{
+    @Binding var size: CGSize
+    
+    func makeUIView(context: Context) -> UIView {
         let view = UIView()
         let layer = AVPlayerLayer(player: self.player)
         
-        view.backgroundColor = .white
+        view.backgroundColor = .black
         view.layer.addSublayer(layer)
         
         layer.frame = CGRect(origin: .zero, size: self.size)
@@ -31,10 +32,10 @@ struct CustomVideoPlayer: UIViewRepresentable {
     }
     
     func updateUIView(_ uiView: UIView, context: Context) {
-        print("updating...")
-    }
-    
-    func change(frame to: CGRect) {
-        
+        for layer in uiView.layer.sublayers ?? [] {
+            if layer is AVPlayerLayer {
+                layer.frame = CGRect(origin: .zero, size: self.size)
+            }
+        }
     }
 }
