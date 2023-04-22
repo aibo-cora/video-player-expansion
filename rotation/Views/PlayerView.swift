@@ -21,35 +21,34 @@ struct PlayerView: View {
     
     var completion: ((UIDeviceOrientation) -> Void)?
     
+    @Namespace var animation
+    
     var body: some View {
         ZStack(alignment: .top) {
             Color.black
             
-            CustomVideoPlayer(player: self.player, size: self.$size)
-                .rotationEffect(self.angle, anchor: .center)
-                .onAppear() {
-                    self.player.play()
-                }
-                .onDisappear() {
-                    self.player.pause()
-                }
-                .onReceive(NotificationCenter.default.publisher(for: UIDevice.orientationDidChangeNotification)) { _ in
-                    let orientation = UIDevice.current.orientation
-                    
-                    switch orientation {
+            Group {
+                CustomVideoPlayer(player: self.player, size: self.$size)
+            }
+            .rotationEffect(self.angle, anchor: .center)
+            .onAppear() {
+                self.player.play()
+            }
+            .onDisappear() {
+                self.player.pause()
+            }
+            .onReceive(NotificationCenter.default.publisher(for: UIDevice.orientationDidChangeNotification)) { _ in
+                withAnimation(.easeInOut(duration: 0.25)) {
+                    switch UIDevice.current.orientation {
                     case .landscapeLeft:
                         self.size = CGSize(width: UIScreen.main.bounds.height, height: UIScreen.main.bounds.width)
                         self.angle = .degrees(90)
                         self.xOffset = UIScreen.main.bounds.width
                         self.yOffset = -30
-                        
-                        print("landscape left")
                     case .landscapeRight:
                         self.size = CGSize(width: UIScreen.main.bounds.height, height: UIScreen.main.bounds.width)
                         self.angle = .degrees(-90)
                         self.yOffset = UIScreen.main.bounds.height - 30
-                        
-                        print("landscape right")
                     default:
                         self.size = self.original
                         self.angle = .degrees(0)
@@ -57,9 +56,9 @@ struct PlayerView: View {
                         self.yOffset = 0
                     }
                 }
-                .animation(.easeIn(duration: 0.25), value: self.angle)
-                .offset(x: self.xOffset)
-                .offset(y: self.yOffset)
+            }
+            .offset(x: self.xOffset)
+            .offset(y: self.yOffset)
         }
     }
 }
