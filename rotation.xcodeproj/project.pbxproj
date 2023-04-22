@@ -13,6 +13,8 @@
 		DE74B51E29F31B4B00D36937 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DE74B51C29F31B4B00D36937 /* Main.storyboard */; };
 		DE74B52029F31B4D00D36937 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DE74B51F29F31B4D00D36937 /* Assets.xcassets */; };
 		DE74B52329F31B4D00D36937 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DE74B52129F31B4D00D36937 /* LaunchScreen.storyboard */; };
+		DE74B52E29F31CD000D36937 /* CustomVideoPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE74B52D29F31CD000D36937 /* CustomVideoPlayer.swift */; };
+		DE74B53129F41E9200D36937 /* PlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE74B53029F41E9200D36937 /* PlayerView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +26,8 @@
 		DE74B51F29F31B4D00D36937 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		DE74B52229F31B4D00D36937 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		DE74B52429F31B4D00D36937 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		DE74B52D29F31CD000D36937 /* CustomVideoPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomVideoPlayer.swift; sourceTree = "<group>"; };
+		DE74B53029F41E9200D36937 /* PlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,15 +60,49 @@
 		DE74B51529F31B4B00D36937 /* rotation */ = {
 			isa = PBXGroup;
 			children = (
-				DE74B51629F31B4B00D36937 /* AppDelegate.swift */,
-				DE74B51829F31B4B00D36937 /* SceneDelegate.swift */,
+				DE74B52F29F41E4C00D36937 /* Views */,
+				DE74B52C29F31CC100D36937 /* Player */,
+				DE74B52B29F31B8800D36937 /* Delegates */,
+				DE74B52A29F31B7900D36937 /* Storyboards */,
 				DE74B51A29F31B4B00D36937 /* ViewController.swift */,
-				DE74B51C29F31B4B00D36937 /* Main.storyboard */,
 				DE74B51F29F31B4D00D36937 /* Assets.xcassets */,
-				DE74B52129F31B4D00D36937 /* LaunchScreen.storyboard */,
 				DE74B52429F31B4D00D36937 /* Info.plist */,
 			);
 			path = rotation;
+			sourceTree = "<group>";
+		};
+		DE74B52A29F31B7900D36937 /* Storyboards */ = {
+			isa = PBXGroup;
+			children = (
+				DE74B52129F31B4D00D36937 /* LaunchScreen.storyboard */,
+				DE74B51C29F31B4B00D36937 /* Main.storyboard */,
+			);
+			path = Storyboards;
+			sourceTree = "<group>";
+		};
+		DE74B52B29F31B8800D36937 /* Delegates */ = {
+			isa = PBXGroup;
+			children = (
+				DE74B51629F31B4B00D36937 /* AppDelegate.swift */,
+				DE74B51829F31B4B00D36937 /* SceneDelegate.swift */,
+			);
+			path = Delegates;
+			sourceTree = "<group>";
+		};
+		DE74B52C29F31CC100D36937 /* Player */ = {
+			isa = PBXGroup;
+			children = (
+				DE74B52D29F31CD000D36937 /* CustomVideoPlayer.swift */,
+			);
+			path = Player;
+			sourceTree = "<group>";
+		};
+		DE74B52F29F41E4C00D36937 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				DE74B53029F41E9200D36937 /* PlayerView.swift */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -141,6 +179,8 @@
 				DE74B51B29F31B4B00D36937 /* ViewController.swift in Sources */,
 				DE74B51729F31B4B00D36937 /* AppDelegate.swift in Sources */,
 				DE74B51929F31B4B00D36937 /* SceneDelegate.swift in Sources */,
+				DE74B53129F41E9200D36937 /* PlayerView.swift in Sources */,
+				DE74B52E29F31CD000D36937 /* CustomVideoPlayer.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -295,6 +335,7 @@
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -302,6 +343,9 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.ghafla.aibo-cora.rotation";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -323,6 +367,7 @@
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -330,6 +375,9 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.ghafla.aibo-cora.rotation";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
