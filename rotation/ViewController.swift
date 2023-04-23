@@ -10,7 +10,7 @@ import SwiftUI
 import AVFoundation
 import Combine
 
-@available(iOS 14.0, *)
+@available(iOS 15.0, *)
 class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -23,16 +23,24 @@ class ViewController: UIViewController {
     var host: UIHostingController<PlayerView>?
 
     func configureUI() {
-        let root = PlayerView(parent: self.view)
+        let root = PlayerView()
         let controller = UIHostingController(rootView: root)
         
         self.host = controller
         
+        controller.view.frame = UIScreen.main.bounds
+        controller.view.layer.zPosition = 1
+        controller.view.translatesAutoresizingMaskIntoConstraints = false
+        
         self.view.addSubview(controller.view)
         self.view.backgroundColor = .clear
         
-        controller.view.layer.zPosition = 1
-        controller.view.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            controller.view.topAnchor.constraint(equalTo: self.view.topAnchor),
+            controller.view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor),
+            controller.view.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
+            controller.view.trailingAnchor.constraint(equalTo: self.view.trailingAnchor)
+        ])
         ///
         let label = UILabel(frame: .zero)
         

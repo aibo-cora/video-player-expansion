@@ -15,6 +15,7 @@
 		DE74B52329F31B4D00D36937 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DE74B52129F31B4D00D36937 /* LaunchScreen.storyboard */; };
 		DE74B52E29F31CD000D36937 /* CustomVideoPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE74B52D29F31CD000D36937 /* CustomVideoPlayer.swift */; };
 		DE74B53129F41E9200D36937 /* PlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE74B53029F41E9200D36937 /* PlayerView.swift */; };
+		DE74B53329F56DD900D36937 /* TestAlignment.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE74B53229F56DD900D36937 /* TestAlignment.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,6 +29,7 @@
 		DE74B52429F31B4D00D36937 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		DE74B52D29F31CD000D36937 /* CustomVideoPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomVideoPlayer.swift; sourceTree = "<group>"; };
 		DE74B53029F41E9200D36937 /* PlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerView.swift; sourceTree = "<group>"; };
+		DE74B53229F56DD900D36937 /* TestAlignment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestAlignment.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -101,6 +103,7 @@
 			isa = PBXGroup;
 			children = (
 				DE74B53029F41E9200D36937 /* PlayerView.swift */,
+				DE74B53229F56DD900D36937 /* TestAlignment.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -179,6 +182,7 @@
 				DE74B51B29F31B4B00D36937 /* ViewController.swift in Sources */,
 				DE74B51729F31B4B00D36937 /* AppDelegate.swift in Sources */,
 				DE74B51929F31B4B00D36937 /* SceneDelegate.swift in Sources */,
+				DE74B53329F56DD900D36937 /* TestAlignment.swift in Sources */,
 				DE74B53129F41E9200D36937 /* PlayerView.swift in Sources */,
 				DE74B52E29F31CD000D36937 /* CustomVideoPlayer.swift in Sources */,
 			);
