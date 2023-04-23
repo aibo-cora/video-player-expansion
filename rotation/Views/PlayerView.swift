@@ -38,7 +38,7 @@ struct PlayerView: View {
                 self.player.pause()
             }
             .onReceive(NotificationCenter.default.publisher(for: UIDevice.orientationDidChangeNotification)) { _ in
-                withAnimation(.easeInOut(duration: 0.25)) {
+                withAnimation(.easeInOut(duration: 0.5)) {
                     switch UIDevice.current.orientation {
                     case .landscapeLeft:
                         self.size = CGSize(width: UIScreen.main.bounds.height, height: UIScreen.main.bounds.width)
