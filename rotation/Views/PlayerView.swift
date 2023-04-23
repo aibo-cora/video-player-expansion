@@ -27,17 +27,6 @@ struct PlayerView: View {
     
     var body: some View {
         CustomVideoPlayer(player: self.player, size: self.$size)
-            .overlay(alignment: Alignment.bottomTrailing, content: {
-                Button {
-                    self.fullscreen.toggle()
-                    
-                    print("tapped")
-                } label: {
-                    Image(systemName: "star.fill")
-                        .foregroundColor(.yellow)
-                }
-                .padding()
-            })
             .frame(maxWidth: self.size.width, maxHeight: self.size.height)
             .rotationEffect(self.angle, anchor: self.angle == .degrees(90) ? .topTrailing : .bottomTrailing)
             .onAppear() {
@@ -69,6 +58,17 @@ struct PlayerView: View {
                 }
             }
             .offset(y: self.yOffset)
+            .overlay(alignment: Alignment.bottomTrailing, content: {
+                Button {
+                    self.fullscreen.toggle()
+                    
+                    print("tapped")
+                } label: {
+                    Image(systemName: "star.fill")
+                        .foregroundColor(.yellow)
+                }
+                .padding()
+            })
     }
 }
 

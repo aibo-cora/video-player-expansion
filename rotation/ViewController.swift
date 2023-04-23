@@ -28,7 +28,6 @@ class ViewController: UIViewController {
         
         self.host = controller
         
-        //controller.view.frame = UIScreen.main.bounds
         controller.view.layer.zPosition = 0
         controller.view.translatesAutoresizingMaskIntoConstraints = false
         
