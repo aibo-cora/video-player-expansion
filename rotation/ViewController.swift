@@ -23,23 +23,35 @@ class ViewController: UIViewController {
     var host: UIHostingController<PlayerView>?
 
     func configureUI() {
-        let root = PlayerView()
-        let controller = UIHostingController(rootView: root)
+        self.view.backgroundColor = .clear
         
-        self.host = controller
+        let root = PlayerView {
+            print("fullscreen=\($0)")
+            
+            if $0 {
+                self.host?.view.layer.zPosition = 2
+            } else {
+                self.host?.view.layer.zPosition = 0
+            }
+        }
+        ///
+        let controller = UIHostingController(rootView: root)
         
         controller.view.layer.zPosition = 0
         controller.view.translatesAutoresizingMaskIntoConstraints = false
         
+        self.host = controller
         self.view.addSubview(controller.view)
-        self.view.backgroundColor = .clear
-        
-        NSLayoutConstraint.activate([
-            controller.view.topAnchor.constraint(equalTo: self.view.topAnchor),
-            controller.view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor),
-            controller.view.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
-            controller.view.trailingAnchor.constraint(equalTo: self.view.trailingAnchor)
-        ])
+        pinToParent(child: controller.view)
+        ///
+        func pinToParent(child: UIView) {
+            NSLayoutConstraint.activate([
+                child.topAnchor.constraint(equalTo: self.view.topAnchor),
+                child.bottomAnchor.constraint(equalTo: self.view.bottomAnchor),
+                child.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
+                child.trailingAnchor.constraint(equalTo: self.view.trailingAnchor)
+            ])
+        }
         ///
         let label = UILabel(frame: .zero)
         

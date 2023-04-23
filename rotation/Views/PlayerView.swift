@@ -19,7 +19,7 @@ struct PlayerView: View {
     
     let player = AVPlayer(url: URL(string: "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4")!)
     
-    var completion: ((UIDeviceOrientation) -> Void)?
+    var expand: ((Bool) -> Void)?
     
     @Namespace var animation
     
@@ -58,23 +58,23 @@ struct PlayerView: View {
                 }
             }
             .offset(y: self.yOffset)
-            .overlay(alignment: Alignment.bottomTrailing, content: {
-                Button {
-                    self.fullscreen.toggle()
-                    
-                    print("tapped")
-                } label: {
-                    Image(systemName: "star.fill")
-                        .foregroundColor(.yellow)
-                }
-                .padding()
-            })
+            .onTapGesture {
+                self.fullscreen.toggle()
+            }
+            .onChange(of: self.fullscreen) {
+                self.expand?($0)
+            }
     }
 }
 
 @available(iOS 15.0, *)
 struct PlayerView_Previews: PreviewProvider {
     static var previews: some View {
-        PlayerView()
+        Group {
+            PlayerView()
+            
+            PlayerView()
+                .previewInterfaceOrientation(.landscapeLeft)
+        }
     }
 }
