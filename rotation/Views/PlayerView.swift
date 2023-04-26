@@ -20,6 +20,7 @@ struct PlayerView: View {
     let fullscreenSize = CGSize(width: UIScreen.main.bounds.height, height: UIScreen.main.bounds.width)
     
     let player = AVPlayer(url: URL(string: "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4")!)
+    let shuttle = "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4"
     
     let topViewHeight: CGFloat
     let bottomViewHeight: CGFloat
@@ -51,7 +52,7 @@ struct PlayerView: View {
                                 self.angle = .degrees(90)
                                 self.size = self.fullscreenSize
                                 
-                                self.yOffset = -self.topViewHeight
+                                self.yOffset = -self.topViewHeight + 60
                                 
                                 print("left")
                                 
@@ -61,7 +62,7 @@ struct PlayerView: View {
                                 self.size = self.fullscreenSize
                                 
                                 self.xOffset = -self.fullscreenSize.width / 2
-                                self.yOffset = -self.topViewHeight
+                                self.yOffset = -self.topViewHeight + 60
                                 
                                 print("right")
                                 
@@ -83,16 +84,18 @@ struct PlayerView: View {
                     .onAppear() {
                         print(geometry.size, self.fullscreenSize)
                     }
-            }
-            
-            Button {
-                self.fullscreen.toggle()
-            } label: {
-                Image(systemName: "star.fill")
-                    .foregroundColor(.yellow)
-                    .frame(maxWidth: 50, maxHeight: 50)
+                    .overlay(alignment: .bottomTrailing) {
+                        Button {
+                            self.fullscreen.toggle()
+                        } label: {
+                            Image(systemName: "star.fill")
+                                .foregroundColor(.yellow)
+                                .frame(maxWidth: 50, maxHeight: 50)
+                        }
+                    }
             }
         }
+        .border(.yellow)
     }
 }
 

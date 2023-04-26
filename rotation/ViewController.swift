@@ -25,19 +25,24 @@ class ViewController: UIViewController {
     func configureUI() {
         self.view.backgroundColor = .clear
         
-        let root = PlayerView(topViewHeight: 100, bottomViewHeight: 500) {
+        let label = UILabel(frame: .zero)
+        let header = UILabel(frame: .zero)
+        
+        let root = PlayerView(topViewHeight: 100, bottomViewHeight: 400) {
             print("fullscreen=\($0)")
             
             if $0 {
                 self.host?.view.layer.zPosition = 2
             } else {
                 self.host?.view.layer.zPosition = 0
+                
+                if let host = self.host {
+                    pinToParent(child: host.view)
+                }
             }
         }
         ///
         let controller = UIHostingController(rootView: root)
-        let label = UILabel(frame: .zero)
-        let header = UILabel(frame: .zero)
         
         controller.view.layer.zPosition = 0
         controller.view.translatesAutoresizingMaskIntoConstraints = false
@@ -79,7 +84,7 @@ class ViewController: UIViewController {
         NSLayoutConstraint.activate([
             label.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -20),
             label.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width),
-            label.heightAnchor.constraint(equalToConstant: 500)
+            label.heightAnchor.constraint(equalToConstant: 400)
         ])
         
     }
