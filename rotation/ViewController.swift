@@ -25,7 +25,7 @@ class ViewController: UIViewController {
     func configureUI() {
         self.view.backgroundColor = .clear
         
-        let root = PlayerView {
+        let root = PlayerView(topViewHeight: 100, bottomViewHeight: 500) {
             print("fullscreen=\($0)")
             
             if $0 {
@@ -36,27 +36,41 @@ class ViewController: UIViewController {
         }
         ///
         let controller = UIHostingController(rootView: root)
+        let label = UILabel(frame: .zero)
+        let header = UILabel(frame: .zero)
         
         controller.view.layer.zPosition = 0
         controller.view.translatesAutoresizingMaskIntoConstraints = false
         
         self.host = controller
+        
         self.view.addSubview(controller.view)
+        self.view.addSubview(label)
+        self.view.addSubview(header)
+        ///
+        header.text = "Header..."
+        header.translatesAutoresizingMaskIntoConstraints = false
+        header.textAlignment = .center
+        header.textColor = .white
+        
+        NSLayoutConstraint.activate([
+            header.topAnchor.constraint(equalTo: self.view.topAnchor),
+            header.bottomAnchor.constraint(equalTo: controller.view.topAnchor),
+            header.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
+            header.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
+            header.heightAnchor.constraint(equalToConstant: 100)
+        ])
         pinToParent(child: controller.view)
         ///
         func pinToParent(child: UIView) {
             NSLayoutConstraint.activate([
-                child.topAnchor.constraint(equalTo: self.view.topAnchor),
-                child.bottomAnchor.constraint(equalTo: self.view.bottomAnchor),
+                child.topAnchor.constraint(equalTo: header.bottomAnchor),
+                child.bottomAnchor.constraint(equalTo: label.topAnchor),
                 child.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
                 child.trailingAnchor.constraint(equalTo: self.view.trailingAnchor)
             ])
         }
         ///
-        let label = UILabel(frame: .zero)
-        
-        self.view.addSubview(label)
-        
         label.text = "Testing..."
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = .center
@@ -65,8 +79,9 @@ class ViewController: UIViewController {
         NSLayoutConstraint.activate([
             label.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -20),
             label.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width),
-            label.heightAnchor.constraint(equalToConstant: 100)
+            label.heightAnchor.constraint(equalToConstant: 500)
         ])
+        
     }
     
     var orientation: UIDeviceOrientation?

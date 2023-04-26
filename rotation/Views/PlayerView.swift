@@ -21,6 +21,9 @@ struct PlayerView: View {
     
     let player = AVPlayer(url: URL(string: "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4")!)
     
+    let topViewHeight: CGFloat
+    let bottomViewHeight: CGFloat
+    
     var expand: ((Bool) -> Void)?
     
     @Namespace var animation
@@ -48,7 +51,7 @@ struct PlayerView: View {
                                 self.angle = .degrees(90)
                                 self.size = self.fullscreenSize
                                 
-                                self.xOffset = -(self.fullscreenSize.width - geometry.size.height) / 2
+                                self.yOffset = -self.topViewHeight
                                 
                                 print("left")
                                 
@@ -58,6 +61,7 @@ struct PlayerView: View {
                                 self.size = self.fullscreenSize
                                 
                                 self.xOffset = -self.fullscreenSize.width / 2
+                                self.yOffset = -self.topViewHeight
                                 
                                 print("right")
                                 
@@ -96,9 +100,9 @@ struct PlayerView: View {
 struct PlayerView_Previews: PreviewProvider {
     static var previews: some View {
         Group {
-            PlayerView()
+            PlayerView(topViewHeight: 100, bottomViewHeight: 500)
             
-            PlayerView()
+            PlayerView(topViewHeight: 100, bottomViewHeight: 500)
                 .previewInterfaceOrientation(.landscapeLeft)
         }
     }
