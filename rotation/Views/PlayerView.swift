@@ -21,6 +21,7 @@ struct PlayerView: View {
     
     let player = AVPlayer(url: URL(string: "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4")!)
     let shuttle = "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4"
+    let bunny = "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
     
     let topViewHeight: CGFloat
     let bottomViewHeight: CGFloat
@@ -95,6 +96,7 @@ struct PlayerView: View {
                     }
             }
         }
+        .frame(maxWidth: self.size.width, maxHeight: self.size.height)
         .border(.yellow)
     }
 }

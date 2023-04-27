@@ -56,7 +56,8 @@ class ViewController: UIViewController {
         header.text = "Header..."
         header.translatesAutoresizingMaskIntoConstraints = false
         header.textAlignment = .center
-        header.textColor = .white
+        header.textColor = .black
+        header.backgroundColor = .white
         
         NSLayoutConstraint.activate([
             header.topAnchor.constraint(equalTo: self.view.topAnchor),
@@ -79,10 +80,11 @@ class ViewController: UIViewController {
         label.text = "Testing..."
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = .center
-        label.textColor = .white
+        label.textColor = .black
+        label.backgroundColor = .white
         
         NSLayoutConstraint.activate([
-            label.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -20),
+            label.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: 0),
             label.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width),
             label.heightAnchor.constraint(equalToConstant: 400)
         ])
