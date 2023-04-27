@@ -53,7 +53,7 @@ struct PlayerView: View {
                                 self.angle = .degrees(90)
                                 self.size = self.fullscreenSize
                                 
-                                self.yOffset = -self.topViewHeight + 60
+                                self.yOffset = -self.topViewHeight
                                 
                                 print("left")
                                 
@@ -63,7 +63,7 @@ struct PlayerView: View {
                                 self.size = self.fullscreenSize
                                 
                                 self.xOffset = -self.fullscreenSize.width / 2
-                                self.yOffset = -self.topViewHeight + 60
+                                self.yOffset = -self.topViewHeight
                                 
                                 print("right")
                                 

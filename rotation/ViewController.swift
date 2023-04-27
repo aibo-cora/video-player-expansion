@@ -44,6 +44,7 @@ class ViewController: UIViewController {
         ///
         let controller = UIHostingController(rootView: root)
         
+        controller.view.backgroundColor = .yellow
         controller.view.layer.zPosition = 0
         controller.view.translatesAutoresizingMaskIntoConstraints = false
         
@@ -64,7 +65,7 @@ class ViewController: UIViewController {
             header.bottomAnchor.constraint(equalTo: controller.view.topAnchor),
             header.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
             header.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
-            header.heightAnchor.constraint(equalToConstant: 100)
+            header.heightAnchor.constraint(equalToConstant: 201)
         ])
         pinToParent(child: controller.view)
         ///
