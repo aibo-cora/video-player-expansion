@@ -20,6 +20,7 @@ struct PlayerView: View {
     let fullscreenSize = CGSize(width: UIScreen.main.bounds.height, height: UIScreen.main.bounds.width)
     
     let player = AVPlayer(url: URL(string: "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4")!)
+    
     let shuttle = "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4"
     let bunny = "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
     
@@ -53,7 +54,7 @@ struct PlayerView: View {
                                 self.angle = .degrees(90)
                                 self.size = self.fullscreenSize
                                 
-                                self.yOffset = -self.topViewHeight
+                                self.yOffset = -(self.originalSize.width - self.originalSize.height) / 2
                                 
                                 print("left")
                                 
@@ -63,7 +64,7 @@ struct PlayerView: View {
                                 self.size = self.fullscreenSize
                                 
                                 self.xOffset = -self.fullscreenSize.width / 2
-                                self.yOffset = -self.topViewHeight
+                                self.yOffset = -(self.originalSize.width - self.originalSize.height) / 2
                                 
                                 print("right")
                                 

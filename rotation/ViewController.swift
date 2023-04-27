@@ -28,7 +28,10 @@ class ViewController: UIViewController {
         let label = UILabel(frame: .zero)
         let header = UILabel(frame: .zero)
         
-        let root = PlayerView(topViewHeight: 100, bottomViewHeight: 400) {
+        let topViewHeight: CGFloat = 201
+        let bottomViewHeight: CGFloat = 400
+        
+        let root = PlayerView(topViewHeight: topViewHeight, bottomViewHeight: bottomViewHeight) {
             print("fullscreen=\($0)")
             
             if $0 {
@@ -65,7 +68,7 @@ class ViewController: UIViewController {
             header.bottomAnchor.constraint(equalTo: controller.view.topAnchor),
             header.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
             header.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
-            header.heightAnchor.constraint(equalToConstant: 201)
+            header.heightAnchor.constraint(equalToConstant: topViewHeight)
         ])
         pinToParent(child: controller.view)
         ///
@@ -87,7 +90,7 @@ class ViewController: UIViewController {
         NSLayoutConstraint.activate([
             label.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: 0),
             label.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width),
-            label.heightAnchor.constraint(equalToConstant: 400)
+            label.heightAnchor.constraint(equalToConstant: bottomViewHeight)
         ])
         
     }
