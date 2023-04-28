@@ -37,6 +37,7 @@ struct PlayerView: View {
         ZStack(alignment: .bottomTrailing) {
             GeometryReader { geometry in
                 CustomVideoPlayer(player: self.player, size: self.$size)
+                    .aspectRatio(16 / 9, contentMode: .fit)
                     .offset(x: self.xOffset, y: self.yOffset)
                     .frame(maxWidth: self.size.width, maxHeight: self.size.height)
                     .rotationEffect(self.angle)
@@ -52,7 +53,7 @@ struct PlayerView: View {
                             switch UIDevice.current.orientation {
                             case .landscapeLeft:
                                 self.angle = .degrees(90)
-                                self.size = self.fullscreenSize
+                                self.size = CGSize(width: 667, height: 375) /// 16:9
                                 
                                 self.yOffset = -(self.originalSize.width - self.originalSize.height) / 2
                                 
@@ -61,9 +62,9 @@ struct PlayerView: View {
                                 self.fullscreen = true
                             case .landscapeRight:
                                 self.angle = .degrees(-90)
-                                self.size = self.fullscreenSize
+                                self.size = CGSize(width: 667, height: 375) /// 16:9
                                 
-                                self.xOffset = -self.fullscreenSize.width / 2
+                                //self.xOffset = -151
                                 self.yOffset = -(self.originalSize.width - self.originalSize.height) / 2
                                 
                                 print("right")

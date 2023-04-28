@@ -27,6 +27,7 @@ class ViewController: UIViewController {
         
         let label = UILabel(frame: .zero)
         let header = UILabel(frame: .zero)
+        let foundation = UIView(frame: .infinite)
         
         let topViewHeight: CGFloat = 201
         let bottomViewHeight: CGFloat = 400
@@ -36,12 +37,18 @@ class ViewController: UIViewController {
             
             if $0 {
                 self.host?.view.layer.zPosition = 2
+                /// Show player's background.
+                foundation.layer.zPosition = 0
+                foundation.isHidden = false
             } else {
                 self.host?.view.layer.zPosition = 0
                 
                 if let host = self.host {
                     pinToParent(child: host.view)
                 }
+                /// Hide player's background.
+                foundation.layer.zPosition = 0
+                foundation.isHidden = true
             }
         }
         ///
@@ -53,9 +60,10 @@ class ViewController: UIViewController {
         
         self.host = controller
         
-        self.view.addSubview(controller.view)
         self.view.addSubview(label)
         self.view.addSubview(header)
+        self.view.addSubview(foundation)
+        self.view.addSubview(controller.view)
         ///
         header.text = "Header..."
         header.translatesAutoresizingMaskIntoConstraints = false
@@ -92,7 +100,9 @@ class ViewController: UIViewController {
             label.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width),
             label.heightAnchor.constraint(equalToConstant: bottomViewHeight)
         ])
-        
+        ///
+        foundation.backgroundColor = .black
+        foundation.isHidden = true
     }
     
     var orientation: UIDeviceOrientation?
