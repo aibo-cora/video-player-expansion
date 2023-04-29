@@ -52,26 +52,32 @@ struct PlayerView: View {
                         withAnimation(.easeInOut(duration: 0.5)) {
                             let playerWidthFullscreen = self.originalSize.width * 16 / 9
                             let playerHeightFullscreen = self.originalSize.width
+                            let buffer = self.fullscreenSize.width - playerWidthFullscreen /// Space not occupied by player.
+                            let playerFullscreenSize = CGSize(width: playerWidthFullscreen, height: playerHeightFullscreen) /// 16:9
+                            let flap = (self.originalSize.width - self.originalSize.height) / 2
                             
                             switch UIDevice.current.orientation {
                             case .landscapeLeft:
                                 self.angle = .degrees(90)
-                                self.size = CGSize(width: playerWidthFullscreen, height: playerHeightFullscreen) /// 16:9
+                                self.size = playerFullscreenSize
                                 
-                                self.yOffset = -(self.originalSize.width - self.originalSize.height) / 2
+                                let xCoordinate = self.topViewHeight - flap
+                                let offset = xCoordinate - buffer / 2
+                                
+                                self.xOffset = -offset
+                                self.yOffset = -flap
                                 
                                 print("left")
                                 
                                 self.fullscreen = true
                             case .landscapeRight:
                                 self.angle = .degrees(-90)
-                                self.size = CGSize(width: playerWidthFullscreen, height: playerHeightFullscreen) /// 16:9
+                                self.size = playerFullscreenSize
                                 
-                                let buffer = self.fullscreenSize.width - playerWidthFullscreen /// Space not occupied by player.
                                 let playerOffset = self.topViewHeight + self.originalSize.height + (self.originalSize.width - self.originalSize.height) / 2
                                 
                                 self.xOffset = -(playerWidthFullscreen - playerOffset + buffer / 2)
-                                self.yOffset = -(self.originalSize.width - self.originalSize.height) / 2
+                                self.yOffset = -flap
                                 
                                 print("right")
                                 
