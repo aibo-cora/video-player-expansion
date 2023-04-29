@@ -50,10 +50,13 @@ struct PlayerView: View {
                     }
                     .onReceive(NotificationCenter.default.publisher(for: UIDevice.orientationDidChangeNotification)) { _ in
                         withAnimation(.easeInOut(duration: 0.5)) {
+                            let playerWidthFullscreen = self.originalSize.width * 16 / 9
+                            let playerHeightFullscreen = self.originalSize.width
+                            
                             switch UIDevice.current.orientation {
                             case .landscapeLeft:
                                 self.angle = .degrees(90)
-                                self.size = CGSize(width: self.originalSize.width * 16 / 9, height: self.originalSize.width) /// 16:9
+                                self.size = CGSize(width: playerWidthFullscreen, height: playerHeightFullscreen) /// 16:9
                                 
                                 self.yOffset = -(self.originalSize.width - self.originalSize.height) / 2
                                 
@@ -62,9 +65,12 @@ struct PlayerView: View {
                                 self.fullscreen = true
                             case .landscapeRight:
                                 self.angle = .degrees(-90)
-                                self.size = CGSize(width: self.originalSize.width * 16 / 9, height: self.originalSize.width) /// 16:9
+                                self.size = CGSize(width: playerWidthFullscreen, height: playerHeightFullscreen) /// 16:9
                                 
-                                self.xOffset = -(188.68 + 75.35)
+                                let buffer = self.fullscreenSize.width - playerWidthFullscreen /// Space not occupied by player.
+                                let playerOffset = self.topViewHeight + self.originalSize.height + (self.originalSize.width - self.originalSize.height) / 2
+                                
+                                self.xOffset = -(playerWidthFullscreen - playerOffset + buffer / 2)
                                 self.yOffset = -(self.originalSize.width - self.originalSize.height) / 2
                                 
                                 print("right")

@@ -57,7 +57,7 @@ class ViewController: UIViewController {
         ///
         let controller = UIHostingController(rootView: root)
         
-        controller.view.backgroundColor = .yellow
+        controller.view.backgroundColor = .black
         controller.view.layer.zPosition = 0
         controller.view.translatesAutoresizingMaskIntoConstraints = false
         
