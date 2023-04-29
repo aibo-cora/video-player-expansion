@@ -29,7 +29,10 @@ class ViewController: UIViewController {
         let header = UILabel(frame: .zero)
         let foundation = UIView(frame: .infinite)
         
-        let topViewHeight: CGFloat = 201
+        let screenWidth = self.view.window?.windowScene?.screen.bounds.width ?? 0
+        let screenHeight = self.view.window?.windowScene?.screen.bounds.height ?? 0
+        
+        let topViewHeight: CGFloat = 200
         let bottomViewHeight: CGFloat = 400
         
         let root = PlayerView(topViewHeight: topViewHeight, bottomViewHeight: bottomViewHeight) {
@@ -83,9 +86,9 @@ class ViewController: UIViewController {
         func pinToParent(child: UIView) {
             NSLayoutConstraint.activate([
                 child.topAnchor.constraint(equalTo: header.bottomAnchor),
-                child.bottomAnchor.constraint(equalTo: label.topAnchor),
                 child.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
-                child.trailingAnchor.constraint(equalTo: self.view.trailingAnchor)
+                child.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
+                child.heightAnchor.constraint(equalToConstant: screenWidth * 9 / 16)
             ])
         }
         ///
@@ -97,8 +100,9 @@ class ViewController: UIViewController {
         
         NSLayoutConstraint.activate([
             label.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: 0),
-            label.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width),
-            label.heightAnchor.constraint(equalToConstant: bottomViewHeight)
+            label.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
+            label.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
+            label.topAnchor.constraint(equalTo: controller.view.bottomAnchor)
         ])
         ///
         foundation.backgroundColor = .black

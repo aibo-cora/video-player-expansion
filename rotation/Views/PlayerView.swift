@@ -11,12 +11,12 @@ import AVKit
 @available(iOS 15.0, *)
 struct PlayerView: View {
     @State var angle = Angle(degrees: 0)
-    @State var size = CGSize(width: 375, height: 211)
+    @State var size = CGSize(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.width * 9 / 16)
     
     @State var yOffset = 0.0
     @State var xOffset = 0.0
     
-    let originalSize = CGSize(width: 375, height: 211)
+    let originalSize = CGSize(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.width * 9 / 16)
     let fullscreenSize = CGSize(width: UIScreen.main.bounds.height, height: UIScreen.main.bounds.width)
     
     let player = AVPlayer(url: URL(string: "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4")!)
@@ -53,7 +53,7 @@ struct PlayerView: View {
                             switch UIDevice.current.orientation {
                             case .landscapeLeft:
                                 self.angle = .degrees(90)
-                                self.size = CGSize(width: 667, height: 375) /// 16:9
+                                self.size = CGSize(width: self.originalSize.width * 16 / 9, height: self.originalSize.width) /// 16:9
                                 
                                 self.yOffset = -(self.originalSize.width - self.originalSize.height) / 2
                                 
@@ -62,9 +62,9 @@ struct PlayerView: View {
                                 self.fullscreen = true
                             case .landscapeRight:
                                 self.angle = .degrees(-90)
-                                self.size = CGSize(width: 667, height: 375) /// 16:9
+                                self.size = CGSize(width: self.originalSize.width * 16 / 9, height: self.originalSize.width) /// 16:9
                                 
-                                //self.xOffset = -151
+                                self.xOffset = -(188.68 + 75.35)
                                 self.yOffset = -(self.originalSize.width - self.originalSize.height) / 2
                                 
                                 print("right")
