@@ -35,27 +35,24 @@ class ViewController: UIViewController {
         let bottomViewHeight: CGFloat = 400
         
         let root = PlayerView(topViewHeight: topViewHeight, bottomViewHeight: bottomViewHeight) {
-            if $0 {
-                self.host?.view.layer.zPosition = 2
-                /// Show player's background.
-                foundation.layer.zPosition = 0
-                foundation.isHidden = false
-            } else {
-                self.host?.view.layer.zPosition = 0
+            if let host = self.host {
+                // host.view.removeFromSuperview()
+                /// Toggle player's background.
+                foundation.isHidden = !$0
                 
-                if let host = self.host {
+                if $0 {
+                    // foundation.addSubview(host.view)
+                } else {
+                    // self.view.addSubview(host.view)
+                    
                     pinToParent(child: host.view)
                 }
-                /// Hide player's background.
-                foundation.layer.zPosition = 0
-                foundation.isHidden = true
             }
         }
         ///
         let controller = UIHostingController(rootView: root)
         
         controller.view.backgroundColor = .black
-        controller.view.layer.zPosition = 0
         controller.view.translatesAutoresizingMaskIntoConstraints = false
         
         self.host = controller
@@ -63,7 +60,6 @@ class ViewController: UIViewController {
         self.view.addSubview(label)
         self.view.addSubview(header)
         self.view.addSubview(foundation)
-        
         self.view.addSubview(controller.view)
         ///
         header.text = "Header..."

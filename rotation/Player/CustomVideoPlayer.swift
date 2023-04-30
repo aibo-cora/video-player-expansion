@@ -32,8 +32,6 @@ struct CustomVideoPlayer: UIViewRepresentable {
     }
     
     func updateUIView(_ uiView: UIView, context: Context) {
-        print("updating, frame=\(uiView.frame)")
-        
         for layer in uiView.layer.sublayers ?? [] {
             if layer is AVPlayerLayer {
                 layer.frame = CGRect(origin: .zero, size: self.size)

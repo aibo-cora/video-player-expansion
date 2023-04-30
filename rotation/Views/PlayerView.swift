@@ -39,121 +39,137 @@ struct PlayerView: View {
     @State var fullscreen = false
     
     var body: some View {
-        ZStack(alignment: .bottomTrailing) {
-            GeometryReader { geometry in
-                CustomVideoPlayer(player: self.player, size: self.$size)
-                    .aspectRatio(16 / 9, contentMode: .fit)
-                    .offset(x: self.pxOffset, y: self.pyOffset)
-                    .frame(maxWidth: self.size.width, maxHeight: self.size.height)
-                    .rotationEffect(self.angle)
-                    .border(.white)
-                    .onAppear() {
-                        self.player.play()
-                    }
-                    .onDisappear() {
-                        self.player.pause()
-                    }
-                    .onReceive(NotificationCenter.default.publisher(for: UIDevice.orientationDidChangeNotification)) { _ in
-                        withAnimation(.easeInOut(duration: 0.5)) {
-                            let playerWidthFullscreen = self.originalSize.width * 16 / 9
-                            let playerHeightFullscreen = self.originalSize.width
+        GeometryReader { geometry in
+            CustomVideoPlayer(player: self.player, size: self.$size)
+                .aspectRatio(16 / 9, contentMode: .fit)
+                .offset(x: self.pxOffset, y: self.pyOffset)
+                .frame(maxWidth: self.size.width, maxHeight: self.size.height)
+                .rotationEffect(self.angle)
+                .onAppear() {
+                    self.player.play()
+                }
+                .onDisappear() {
+                    self.player.pause()
+                }
+                .onReceive(NotificationCenter.default.publisher(for: UIDevice.orientationDidChangeNotification)) { _ in
+                    withAnimation(.easeInOut(duration: 0.5)) {
+                        let playerWidthFullscreen = self.originalSize.width * 16 / 9
+                        let playerHeightFullscreen = self.originalSize.width
+                        
+                        let buffer = self.fullscreenSize.width - playerWidthFullscreen /// Space not occupied by player.
+                        let playerFullscreenSize = CGSize(width: playerWidthFullscreen, height: playerHeightFullscreen) /// 16:9
+                        let flap = (self.originalSize.width - self.originalSize.height) / 2
+                        
+                        self.orientation = UIDevice.current.orientation
+                        
+                        switch self.orientation {
+                        case .landscapeLeft:
+                            self.angle = .degrees(90)
+                            self.size = playerFullscreenSize
                             
-                            let buffer = self.fullscreenSize.width - playerWidthFullscreen /// Space not occupied by player.
-                            let playerFullscreenSize = CGSize(width: playerWidthFullscreen, height: playerHeightFullscreen) /// 16:9
-                            let flap = (self.originalSize.width - self.originalSize.height) / 2
+                            let xCoordinate = self.topViewHeight - flap
+                            let offset = xCoordinate - buffer / 2
                             
-                            self.orientation = UIDevice.current.orientation
+                            self.pxOffset = -offset
+                            self.pyOffset = -flap
                             
-                            switch self.orientation {
-                            case .landscapeLeft:
-                                self.angle = .degrees(90)
-                                self.size = playerFullscreenSize
-                                
-                                let xCoordinate = self.topViewHeight - flap
-                                let offset = xCoordinate - buffer / 2
-                                
-                                self.pxOffset = -offset
-                                self.pyOffset = -flap
-                                
-                                print("left")
-                                
-                                self.fullscreen = true
-                            case .landscapeRight:
-                                self.angle = .degrees(-90)
-                                self.size = playerFullscreenSize
-                                
-                                let playerOffset = self.topViewHeight + self.originalSize.height + (self.originalSize.width - self.originalSize.height) / 2
-                                
-                                self.pxOffset = -(playerWidthFullscreen - playerOffset + buffer / 2)
-                                self.pyOffset = -flap
-                                
-                                print("right")
-                                
-                                self.fullscreen = true
-                            case .portrait:
-                                if self.fullscreen {
-                                    self.centerPlayer()
-                                } else {
-                                    self.changePlayerTransformWithOffsets(x: 0, y: 0)
-                                }
-                            default:
-                                break
-                            }
-                        }
-                    }
-                    .onChange(of: self.fullscreen) { fullscreen in
-                        withAnimation(.easeInOut(duration: 0.5)) {
-                            self.expand?(fullscreen)
+                            print("left")
                             
-                            if !fullscreen {
+                            self.fullscreen = true
+                        case .landscapeRight:
+                            self.angle = .degrees(-90)
+                            self.size = playerFullscreenSize
+                            
+                            let playerOffset = self.topViewHeight + self.originalSize.height + (self.originalSize.width - self.originalSize.height) / 2
+                            
+                            self.pxOffset = -(playerWidthFullscreen - playerOffset + buffer / 2)
+                            self.pyOffset = -flap
+                            
+                            print("right")
+                            
+                            self.fullscreen = true
+                        case .portrait:
+                            if self.fullscreen {
+                                self.centerPlayer()
+                            } else {
                                 self.changePlayerTransformWithOffsets(x: 0, y: 0)
                             }
+                        default:
+                            break
                         }
                     }
-                    .overlay {
-                        VStack {
-                            HStack {
-                                Text("Adventures of the Big Bunny")
-                                Spacer()
-                            }
-                            .padding()
-                            .foregroundColor(.white)
-                            .frame(maxWidth: .infinity, alignment: .top)
-                            .offset(x: self.pxOffset, y: self.pyOffset)
-                            
+                }
+                .onChange(of: self.fullscreen) { fullscreen in
+                    withAnimation(.easeInOut(duration: 0.5)) {
+                        self.expand?(fullscreen)
+                        
+                        if !fullscreen {
+                            self.changePlayerTransformWithOffsets(x: 0, y: 0)
+                        }
+                    }
+                }
+                .overlay {
+                    VStack {
+                        HStack {
+                            Text("Adventures of the Big Bunny")
                             Spacer()
-                            HStack {
+                        }
+                        .padding([.top, .horizontal])
+                        .foregroundColor(.white)
+                        .frame(maxWidth: .infinity, maxHeight: 40, alignment: .top)
+                        .offset(x: self.pxOffset, y: self.pyOffset)
+                        
+                        Spacer()
+                        HStack {
+                            Button {
+                                print("play")
+                            } label: {
                                 Image(systemName: "play.fill")
                                     .font(.title)
                                     .foregroundColor(.white)
+                                    .frame(maxWidth: .infinity, maxHeight: .infinity)
                             }
-                            .frame(maxWidth: .infinity, alignment: .center)
+                            .frame(width: 40, height: 40)
+                        }
+                        .frame(maxWidth: .infinity, maxHeight: 40, alignment: .center)
+                        .offset(x: self.pxOffset, y: self.pyOffset)
+                        
+                        Spacer()
+                        
+                        HStack {
+                            Button {
+                                print("play")
+                            } label: {
+                                Image(systemName: "play.fill")
+                                    .font(.title)
+                                    .foregroundColor(.white)
+                                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                            }
+                            .frame(width: 40, height: 40)
                             
                             Spacer()
                             
-                            HStack {
-                                Spacer()
+                            Button {
+                                self.fullscreen.toggle()
                                 
-                                Button {
-                                    self.fullscreen.toggle()
-                                    
-                                    withAnimation {
-                                        if self.fullscreen {
-                                            self.centerPlayer()
-                                        }
+                                withAnimation {
+                                    if self.fullscreen {
+                                        self.centerPlayer()
                                     }
-                                } label: {
-                                    Image(systemName: "star.fill")
-                                        .foregroundColor(.yellow)
-                                        .frame(maxWidth: .infinity, maxHeight: .infinity)
                                 }
-                                .frame(width: 50, height: 50)
+                            } label: {
+                                Image(systemName: "star.fill")
+                                    .foregroundColor(.yellow)
+                                    .frame(maxWidth: .infinity, maxHeight: .infinity)
                             }
-                            .frame(maxWidth: .infinity, alignment: .bottom)
+                            .frame(width: 40, height: 40)
+                            .padding([.trailing, .bottom])
                         }
-                        .rotationEffect(self.angle)
+                        .offset(x: self.pxOffset, y: self.pyOffset)
+                        .frame(maxWidth: .infinity, maxHeight: 40, alignment: .bottom)
                     }
-            }
+                    .rotationEffect(self.angle)
+                }
         }
         .frame(maxWidth: self.size.width, maxHeight: self.size.height)
         .border(.yellow)
@@ -177,11 +193,6 @@ struct PlayerView: View {
         self.pxOffset = x
         self.pyOffset = y
     }
-    
-    func changeControlTransformWithOffsets(x: CGFloat, y: CGFloat) {
-        self.cxOffset = x
-        self.cyOffset = y
-    }
 }
 
 @available(iOS 15.0, *)
@@ -189,9 +200,6 @@ struct PlayerView_Previews: PreviewProvider {
     static var previews: some View {
         Group {
             PlayerView(topViewHeight: 100, bottomViewHeight: 500)
-            
-            PlayerView(topViewHeight: 100, bottomViewHeight: 500)
-                .previewInterfaceOrientation(.landscapeLeft)
         }
     }
 }
