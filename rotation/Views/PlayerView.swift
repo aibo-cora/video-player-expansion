@@ -13,8 +13,13 @@ struct PlayerView: View {
     @State var angle = Angle(degrees: 0)
     @State var size = CGSize(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.width * 9 / 16)
     
-    @State var yOffset = 0.0
-    @State var xOffset = 0.0
+    @State var pxOffset = 0.0
+    @State var pyOffset = 0.0
+    
+    @State var cxOffset = 0.0
+    @State var cyOffset = 0.0
+    
+    @State var orientation: UIDeviceOrientation = .unknown
     
     let originalSize = CGSize(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.width * 9 / 16)
     let fullscreenSize = CGSize(width: UIScreen.main.bounds.height, height: UIScreen.main.bounds.width)
@@ -38,7 +43,7 @@ struct PlayerView: View {
             GeometryReader { geometry in
                 CustomVideoPlayer(player: self.player, size: self.$size)
                     .aspectRatio(16 / 9, contentMode: .fit)
-                    .offset(x: self.xOffset, y: self.yOffset)
+                    .offset(x: self.pxOffset, y: self.pyOffset)
                     .frame(maxWidth: self.size.width, maxHeight: self.size.height)
                     .rotationEffect(self.angle)
                     .border(.white)
@@ -52,11 +57,14 @@ struct PlayerView: View {
                         withAnimation(.easeInOut(duration: 0.5)) {
                             let playerWidthFullscreen = self.originalSize.width * 16 / 9
                             let playerHeightFullscreen = self.originalSize.width
+                            
                             let buffer = self.fullscreenSize.width - playerWidthFullscreen /// Space not occupied by player.
                             let playerFullscreenSize = CGSize(width: playerWidthFullscreen, height: playerHeightFullscreen) /// 16:9
                             let flap = (self.originalSize.width - self.originalSize.height) / 2
                             
-                            switch UIDevice.current.orientation {
+                            self.orientation = UIDevice.current.orientation
+                            
+                            switch self.orientation {
                             case .landscapeLeft:
                                 self.angle = .degrees(90)
                                 self.size = playerFullscreenSize
@@ -64,8 +72,8 @@ struct PlayerView: View {
                                 let xCoordinate = self.topViewHeight - flap
                                 let offset = xCoordinate - buffer / 2
                                 
-                                self.xOffset = -offset
-                                self.yOffset = -flap
+                                self.pxOffset = -offset
+                                self.pyOffset = -flap
                                 
                                 print("left")
                                 
@@ -76,8 +84,8 @@ struct PlayerView: View {
                                 
                                 let playerOffset = self.topViewHeight + self.originalSize.height + (self.originalSize.width - self.originalSize.height) / 2
                                 
-                                self.xOffset = -(playerWidthFullscreen - playerOffset + buffer / 2)
-                                self.yOffset = -flap
+                                self.pxOffset = -(playerWidthFullscreen - playerOffset + buffer / 2)
+                                self.pyOffset = -flap
                                 
                                 print("right")
                                 
@@ -86,7 +94,7 @@ struct PlayerView: View {
                                 if self.fullscreen {
                                     self.centerPlayer()
                                 } else {
-                                    self.rotateToTransformWithOffsets(x: 0, y: 0)
+                                    self.changePlayerTransformWithOffsets(x: 0, y: 0)
                                 }
                             default:
                                 break
@@ -98,27 +106,33 @@ struct PlayerView: View {
                             self.expand?(fullscreen)
                             
                             if !fullscreen {
-                                self.rotateToTransformWithOffsets(x: 0, y: 0)
+                                self.changePlayerTransformWithOffsets(x: 0, y: 0)
                             }
                         }
                     }
                     .onAppear() {
                         print(geometry.size, self.fullscreenSize)
                     }
-                    .overlay(alignment: .bottomTrailing) {
-                        Button {
-                            self.fullscreen.toggle()
-                            
-                            withAnimation {
-                                if self.fullscreen {
-                                    self.centerPlayer()
+                    .overlay {
+                        VStack {
+                            Text("Adventures of the Big Bunny")
+                            Spacer()
+                            Button {
+                                self.fullscreen.toggle()
+                                
+                                withAnimation {
+                                    if self.fullscreen {
+                                        self.centerPlayer()
+                                    }
                                 }
+                            } label: {
+                                Image(systemName: "star.fill")
+                                    .foregroundColor(.yellow)
+                                    .frame(maxWidth: 50, maxHeight: 50)
                             }
-                        } label: {
-                            Image(systemName: "star.fill")
-                                .foregroundColor(.yellow)
-                                .frame(maxWidth: 50, maxHeight: 50)
                         }
+                        .offset(x: self.cxOffset, y: self.cyOffset)
+                        .rotationEffect(self.angle)
                     }
             }
         }
@@ -131,18 +145,23 @@ struct PlayerView: View {
         let yPosition = self.topViewHeight + self.originalSize.height / 2
         
         if yPosition < center {
-            self.rotateToTransformWithOffsets(x: 0, y: center - yPosition)
+            self.changePlayerTransformWithOffsets(x: 0, y: center - yPosition)
         } else {
-            self.rotateToTransformWithOffsets(x: 0, y: yPosition - center)
+            self.changePlayerTransformWithOffsets(x: 0, y: yPosition - center)
         }
     }
     
-    func rotateToTransformWithOffsets(x: CGFloat, y: CGFloat) {
+    func changePlayerTransformWithOffsets(x: CGFloat, y: CGFloat) {
         self.angle = .degrees(0)
         self.size = self.originalSize
         
-        self.xOffset = x
-        self.yOffset = y
+        self.pxOffset = x
+        self.pyOffset = y
+    }
+    
+    func changeControlTransformWithOffsets(x: CGFloat, y: CGFloat) {
+        self.cxOffset = x
+        self.cyOffset = y
     }
 }
 
