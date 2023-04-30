@@ -35,8 +35,6 @@ class ViewController: UIViewController {
         let bottomViewHeight: CGFloat = 400
         
         let root = PlayerView(topViewHeight: topViewHeight, bottomViewHeight: bottomViewHeight) {
-            print("fullscreen=\($0)")
-            
             if $0 {
                 self.host?.view.layer.zPosition = 2
                 /// Show player's background.
@@ -65,6 +63,7 @@ class ViewController: UIViewController {
         self.view.addSubview(label)
         self.view.addSubview(header)
         self.view.addSubview(foundation)
+        
         self.view.addSubview(controller.view)
         ///
         header.text = "Header..."

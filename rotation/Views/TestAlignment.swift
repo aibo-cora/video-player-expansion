@@ -7,28 +7,53 @@
 
 import SwiftUI
 
-@available(iOS 14.0, *)
+@available(iOS 15.0, *)
 struct TestAlignment: View {
     var body: some View {
-        ZStack(alignment: .bottomTrailing) {
-            Color.black
-            
-            Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
-                .foregroundColor(.white)
-                .padding()
-                .frame(maxWidth: .infinity, maxHeight: 100, alignment: .center)
-            
-            Image(systemName: "star.fill")
-                .foregroundColor(.yellow)
-                .padding()
-        }
-        
-        .ignoresSafeArea()
-        
+        Rectangle()
+            .ignoresSafeArea()
+            .overlay {
+                VStack {
+                    HStack {
+                        Text("Adventures of the Big Bunny")
+                        Spacer()
+                    }
+                    .foregroundColor(.white)
+                    .frame(maxWidth: .infinity, maxHeight: 100, alignment: .top)
+                    
+                    Spacer()
+                    
+                    HStack {
+                        Image(systemName: "play.fill")
+                            .font(.title)
+                            .foregroundColor(.white)
+                    }
+                    .frame(maxWidth: .infinity, alignment: .center)
+                    
+                    Spacer()
+                    
+                    HStack {
+                        Spacer()
+                        
+                        Button {
+                            withAnimation {
+                                
+                            }
+                        } label: {
+                            Image(systemName: "star.fill")
+                                .foregroundColor(.yellow)
+                                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                        }
+                        .frame(width: 50, height: 50)
+                    }
+                    .frame(maxWidth: .infinity, alignment: .bottom)
+                }
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+            }
     }
 }
 
-@available(iOS 14.0, *)
+@available(iOS 15.0, *)
 struct TestAlignment_Previews: PreviewProvider {
     static var previews: some View {
         TestAlignment()

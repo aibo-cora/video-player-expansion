@@ -110,28 +110,47 @@ struct PlayerView: View {
                             }
                         }
                     }
-                    .onAppear() {
-                        print(geometry.size, self.fullscreenSize)
-                    }
                     .overlay {
                         VStack {
-                            Text("Adventures of the Big Bunny")
-                            Spacer()
-                            Button {
-                                self.fullscreen.toggle()
-                                
-                                withAnimation {
-                                    if self.fullscreen {
-                                        self.centerPlayer()
-                                    }
-                                }
-                            } label: {
-                                Image(systemName: "star.fill")
-                                    .foregroundColor(.yellow)
-                                    .frame(maxWidth: 50, maxHeight: 50)
+                            HStack {
+                                Text("Adventures of the Big Bunny")
+                                Spacer()
                             }
+                            .padding()
+                            .foregroundColor(.white)
+                            .frame(maxWidth: .infinity, alignment: .top)
+                            .offset(x: self.pxOffset, y: self.pyOffset)
+                            
+                            Spacer()
+                            HStack {
+                                Image(systemName: "play.fill")
+                                    .font(.title)
+                                    .foregroundColor(.white)
+                            }
+                            .frame(maxWidth: .infinity, alignment: .center)
+                            
+                            Spacer()
+                            
+                            HStack {
+                                Spacer()
+                                
+                                Button {
+                                    self.fullscreen.toggle()
+                                    
+                                    withAnimation {
+                                        if self.fullscreen {
+                                            self.centerPlayer()
+                                        }
+                                    }
+                                } label: {
+                                    Image(systemName: "star.fill")
+                                        .foregroundColor(.yellow)
+                                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                                }
+                                .frame(width: 50, height: 50)
+                            }
+                            .frame(maxWidth: .infinity, alignment: .bottom)
                         }
-                        .offset(x: self.cxOffset, y: self.cyOffset)
                         .rotationEffect(self.angle)
                     }
             }
