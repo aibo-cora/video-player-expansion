@@ -30,7 +30,6 @@ class ViewController: UIViewController {
         let foundation = UIView(frame: .infinite)
         
         let screenWidth = self.view.window?.windowScene?.screen.bounds.width ?? 0
-        let screenHeight = self.view.window?.windowScene?.screen.bounds.height ?? 0
         
         let topViewHeight: CGFloat = 200
         let bottomViewHeight: CGFloat = 400

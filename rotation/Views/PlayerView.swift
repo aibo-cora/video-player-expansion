@@ -83,18 +83,24 @@ struct PlayerView: View {
                                 
                                 self.fullscreen = true
                             case .portrait:
-                                self.angle = .degrees(0)
-                                self.size = self.originalSize
-                                
-                                self.yOffset = 0
-                                self.xOffset = 0
+                                if self.fullscreen {
+                                    self.centerPlayer()
+                                } else {
+                                    self.rotateToTransformWithOffsets(x: 0, y: 0)
+                                }
                             default:
                                 break
                             }
                         }
                     }
-                    .onChange(of: self.fullscreen) {
-                        self.expand?($0)
+                    .onChange(of: self.fullscreen) { fullscreen in
+                        withAnimation(.easeInOut(duration: 0.5)) {
+                            self.expand?(fullscreen)
+                            
+                            if !fullscreen {
+                                self.rotateToTransformWithOffsets(x: 0, y: 0)
+                            }
+                        }
                     }
                     .onAppear() {
                         print(geometry.size, self.fullscreenSize)
@@ -102,6 +108,12 @@ struct PlayerView: View {
                     .overlay(alignment: .bottomTrailing) {
                         Button {
                             self.fullscreen.toggle()
+                            
+                            withAnimation {
+                                if self.fullscreen {
+                                    self.centerPlayer()
+                                }
+                            }
                         } label: {
                             Image(systemName: "star.fill")
                                 .foregroundColor(.yellow)
@@ -112,6 +124,25 @@ struct PlayerView: View {
         }
         .frame(maxWidth: self.size.width, maxHeight: self.size.height)
         .border(.yellow)
+    }
+    
+    func centerPlayer() {
+        let center = self.fullscreenSize.width / 2
+        let yPosition = self.topViewHeight + self.originalSize.height / 2
+        
+        if yPosition < center {
+            self.rotateToTransformWithOffsets(x: 0, y: center - yPosition)
+        } else {
+            self.rotateToTransformWithOffsets(x: 0, y: yPosition - center)
+        }
+    }
+    
+    func rotateToTransformWithOffsets(x: CGFloat, y: CGFloat) {
+        self.angle = .degrees(0)
+        self.size = self.originalSize
+        
+        self.xOffset = x
+        self.yOffset = y
     }
 }
 
