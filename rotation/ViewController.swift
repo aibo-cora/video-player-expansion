@@ -25,27 +25,24 @@ class ViewController: UIViewController {
     func configureUI() {
         self.view.backgroundColor = .clear
         
+        let screenWidth = self.view.window?.windowScene?.screen.bounds.width ?? 0
+        let screenHeight = self.view.window?.windowScene?.screen.bounds.height ?? 0
+        
         let label = UILabel(frame: .zero)
         let header = UILabel(frame: .zero)
-        let foundation = UIView(frame: .infinite)
-        
-        let screenWidth = self.view.window?.windowScene?.screen.bounds.width ?? 0
+        let foundation = UIView(frame: CGRect(origin: .zero, size: CGSize(width: screenWidth, height: screenHeight)))
         
         let topViewHeight: CGFloat = 200
         let bottomViewHeight: CGFloat = 400
         
         let root = PlayerView(topViewHeight: topViewHeight, bottomViewHeight: bottomViewHeight) {
             if let host = self.host {
-                // host.view.removeFromSuperview()
-                /// Toggle player's background.
-                foundation.isHidden = !$0
-                
                 if $0 {
-                    // foundation.addSubview(host.view)
+                    self.view.sendSubviewToBack(label)
+                    self.view.sendSubviewToBack(header)
                 } else {
-                    // self.view.addSubview(host.view)
-                    
-                    pinToParent(child: host.view)
+                    self.view.bringSubviewToFront(label)
+                    self.view.bringSubviewToFront(header)
                 }
             }
         }
@@ -60,7 +57,11 @@ class ViewController: UIViewController {
         self.view.addSubview(label)
         self.view.addSubview(header)
         self.view.addSubview(foundation)
-        self.view.addSubview(controller.view)
+        
+        foundation.addSubview(controller.view)
+        
+        self.view.bringSubviewToFront(label)
+        self.view.bringSubviewToFront(header)
         ///
         header.text = "Header..."
         header.translatesAutoresizingMaskIntoConstraints = false
@@ -75,13 +76,13 @@ class ViewController: UIViewController {
             header.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
             header.heightAnchor.constraint(equalToConstant: topViewHeight)
         ])
-        pinToParent(child: controller.view)
+        pin(child: controller.view, to: foundation)
         ///
-        func pinToParent(child: UIView) {
+        func pin(child: UIView, to parent: UIView) {
             NSLayoutConstraint.activate([
-                child.topAnchor.constraint(equalTo: header.bottomAnchor),
-                child.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
-                child.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
+                child.topAnchor.constraint(equalTo: parent.topAnchor, constant: topViewHeight),
+                child.leadingAnchor.constraint(equalTo: parent.leadingAnchor),
+                child.trailingAnchor.constraint(equalTo: parent.trailingAnchor),
                 child.heightAnchor.constraint(equalToConstant: screenWidth * 9 / 16)
             ])
         }
@@ -100,7 +101,6 @@ class ViewController: UIViewController {
         ])
         ///
         foundation.backgroundColor = .black
-        foundation.isHidden = true
     }
     
     var orientation: UIDeviceOrientation?

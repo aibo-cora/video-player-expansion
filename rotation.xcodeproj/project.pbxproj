@@ -16,6 +16,7 @@
 		DE74B52E29F31CD000D36937 /* CustomVideoPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE74B52D29F31CD000D36937 /* CustomVideoPlayer.swift */; };
 		DE74B53129F41E9200D36937 /* PlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE74B53029F41E9200D36937 /* PlayerView.swift */; };
 		DE74B53329F56DD900D36937 /* TestAlignment.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE74B53229F56DD900D36937 /* TestAlignment.swift */; };
+		DE74B53B2A004F5700D36937 /* TransparentButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE74B53A2A004F5700D36937 /* TransparentButton.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,6 +31,7 @@
 		DE74B52D29F31CD000D36937 /* CustomVideoPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomVideoPlayer.swift; sourceTree = "<group>"; };
 		DE74B53029F41E9200D36937 /* PlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerView.swift; sourceTree = "<group>"; };
 		DE74B53229F56DD900D36937 /* TestAlignment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestAlignment.swift; sourceTree = "<group>"; };
+		DE74B53A2A004F5700D36937 /* TransparentButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransparentButton.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -62,6 +64,7 @@
 		DE74B51529F31B4B00D36937 /* rotation */ = {
 			isa = PBXGroup;
 			children = (
+				DE74B5392A004F0F00D36937 /* Playground */,
 				DE74B52F29F41E4C00D36937 /* Views */,
 				DE74B52C29F31CC100D36937 /* Player */,
 				DE74B52B29F31B8800D36937 /* Delegates */,
@@ -103,9 +106,17 @@
 			isa = PBXGroup;
 			children = (
 				DE74B53029F41E9200D36937 /* PlayerView.swift */,
-				DE74B53229F56DD900D36937 /* TestAlignment.swift */,
 			);
 			path = Views;
+			sourceTree = "<group>";
+		};
+		DE74B5392A004F0F00D36937 /* Playground */ = {
+			isa = PBXGroup;
+			children = (
+				DE74B53229F56DD900D36937 /* TestAlignment.swift */,
+				DE74B53A2A004F5700D36937 /* TransparentButton.swift */,
+			);
+			path = Playground;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -180,6 +191,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				DE74B51B29F31B4B00D36937 /* ViewController.swift in Sources */,
+				DE74B53B2A004F5700D36937 /* TransparentButton.swift in Sources */,
 				DE74B51729F31B4B00D36937 /* AppDelegate.swift in Sources */,
 				DE74B51929F31B4B00D36937 /* SceneDelegate.swift in Sources */,
 				DE74B53329F56DD900D36937 /* TestAlignment.swift in Sources */,

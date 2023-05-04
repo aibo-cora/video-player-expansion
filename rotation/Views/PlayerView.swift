@@ -47,6 +47,7 @@ struct PlayerView: View {
                 .rotationEffect(self.angle)
                 .onAppear() {
                     self.player.play()
+                    
                 }
                 .onDisappear() {
                     self.player.pause()
@@ -141,7 +142,6 @@ struct PlayerView: View {
                                 print("play")
                             } label: {
                                 Image(systemName: "play.fill")
-                                    .font(.title)
                                     .foregroundColor(.white)
                                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                             }
@@ -173,6 +173,12 @@ struct PlayerView: View {
         }
         .frame(maxWidth: self.size.width, maxHeight: self.size.height)
         .border(.yellow)
+    }
+    
+    struct Controls: View {
+        var body: some View {
+            Text("")
+        }
     }
     
     func centerPlayer() {
