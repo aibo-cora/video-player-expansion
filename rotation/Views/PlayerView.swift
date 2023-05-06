@@ -41,7 +41,6 @@ struct PlayerView: View {
     var body: some View {
         GeometryReader { geometry in
             CustomVideoPlayer(player: self.player, size: self.$size)
-                .aspectRatio(16 / 9, contentMode: .fit)
                 .offset(x: self.pxOffset, y: self.pyOffset)
                 .frame(maxWidth: self.size.width, maxHeight: self.size.height)
                 .rotationEffect(self.angle)
@@ -83,18 +82,14 @@ struct PlayerView: View {
                             
                             let playerOffset = self.topViewHeight + self.originalSize.height + (self.originalSize.width - self.originalSize.height) / 2
                             
-                            self.pxOffset = -(playerWidthFullscreen - playerOffset + buffer / 2)
-                            self.pyOffset = -flap
+                            //self.pxOffset = -(playerWidthFullscreen - playerOffset + buffer / 2)
+                            //self.pyOffset = -flap
                             
                             print("right")
                             
                             self.fullscreen = true
                         case .portrait:
-                            if self.fullscreen {
-                                self.centerPlayer()
-                            } else {
-                                self.changePlayerTransformWithOffsets(x: 0, y: 0)
-                            }
+                            self.changePlayerTransformWithOffsets(x: 0, y: 0)
                         default:
                             break
                         }
@@ -118,7 +113,6 @@ struct PlayerView: View {
                         .padding([.top, .horizontal])
                         .foregroundColor(.white)
                         .frame(maxWidth: .infinity, maxHeight: 40, alignment: .top)
-                        .offset(x: self.pxOffset, y: self.pyOffset)
                         
                         Spacer()
                         HStack {
@@ -133,7 +127,6 @@ struct PlayerView: View {
                             .frame(width: 40, height: 40)
                         }
                         .frame(maxWidth: .infinity, maxHeight: 40, alignment: .center)
-                        .offset(x: self.pxOffset, y: self.pyOffset)
                         
                         Spacer()
                         
@@ -165,11 +158,13 @@ struct PlayerView: View {
                             .frame(width: 40, height: 40)
                             .padding([.trailing, .bottom])
                         }
-                        .offset(x: self.pxOffset, y: self.pyOffset)
                         .frame(maxWidth: .infinity, maxHeight: 40, alignment: .bottom)
                     }
                     .rotationEffect(self.angle)
                 }
+        }
+        .onAppear() {
+            print(self.size)
         }
         .frame(maxWidth: self.size.width, maxHeight: self.size.height)
         .border(.yellow)

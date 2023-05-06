@@ -21,6 +21,12 @@ class ViewController: UIViewController {
     }
     
     var host: UIHostingController<PlayerView>?
+    
+    var playerTopRegularHeight: NSLayoutConstraint!
+    var playerTopFullscreenHeight: NSLayoutConstraint!
+    
+    var playerRegularHeight: NSLayoutConstraint!
+    var playerFullscreenHeight: NSLayoutConstraint!
 
     func configureUI() {
         self.view.backgroundColor = .clear
@@ -35,34 +41,54 @@ class ViewController: UIViewController {
         let topViewHeight: CGFloat = 200
         let bottomViewHeight: CGFloat = 400
         
+        let headerRegularHeight: NSLayoutConstraint = header.heightAnchor.constraint(equalToConstant: topViewHeight)
+        let headerFullscreenHeight: NSLayoutConstraint = header.heightAnchor.constraint(equalToConstant: 0)
+        
+        headerRegularHeight.priority = UILayoutPriority(999)
+        headerFullscreenHeight.priority = UILayoutPriority(998)
+        
         let root = PlayerView(topViewHeight: topViewHeight, bottomViewHeight: bottomViewHeight) {
-            if let host = self.host {
-                if $0 {
-                    self.view.sendSubviewToBack(label)
-                    self.view.sendSubviewToBack(header)
-                } else {
-                    self.view.bringSubviewToFront(label)
-                    self.view.bringSubviewToFront(header)
-                }
+            if $0 {
+                headerFullscreenHeight.priority = UILayoutPriority(1000)
+                ///
+                self.playerFullscreenHeight.priority = UILayoutPriority(1000)
+                self.playerTopFullscreenHeight.priority = UILayoutPriority(1000)
+                
+                self.host?.view.frame = CGRect(origin: .zero, size: CGSize(width: screenWidth, height: screenHeight))
+            } else {
+                headerFullscreenHeight.priority = UILayoutPriority(998)
+                ///
+                self.playerFullscreenHeight.priority = UILayoutPriority(998)
+                self.playerTopFullscreenHeight.priority = UILayoutPriority(998)
             }
         }
-        ///
+        
         let controller = UIHostingController(rootView: root)
         
         controller.view.backgroundColor = .black
         controller.view.translatesAutoresizingMaskIntoConstraints = false
+        /// Player - top.
+        self.playerTopRegularHeight = controller.view.topAnchor.constraint(equalTo: foundation.topAnchor, constant: topViewHeight)
+        self.playerTopFullscreenHeight = controller.view.topAnchor.constraint(equalTo: foundation.topAnchor, constant: 0)
         
+        self.playerTopRegularHeight.priority = UILayoutPriority(999)
+        self.playerTopFullscreenHeight.priority = UILayoutPriority(998)
+        /// Player - height.
+        self.playerRegularHeight = controller.view.heightAnchor.constraint(equalToConstant: screenWidth * 9 / 16)
+        self.playerFullscreenHeight = controller.view.heightAnchor.constraint(equalToConstant: screenHeight)
+        
+        self.playerRegularHeight.priority = UILayoutPriority(999)
+        self.playerFullscreenHeight.priority = UILayoutPriority(998)
+        ///
         self.host = controller
         
-        self.view.addSubview(label)
-        self.view.addSubview(header)
+        // self.view.addSubview(label)
+        
         self.view.addSubview(foundation)
-        
+        self.view.addSubview(header)
         foundation.addSubview(controller.view)
-        
-        self.view.bringSubviewToFront(label)
-        self.view.bringSubviewToFront(header)
         ///
+        
         header.text = "Header..."
         header.translatesAutoresizingMaskIntoConstraints = false
         header.textAlignment = .center
@@ -71,19 +97,21 @@ class ViewController: UIViewController {
         
         NSLayoutConstraint.activate([
             header.topAnchor.constraint(equalTo: self.view.topAnchor),
-            header.bottomAnchor.constraint(equalTo: controller.view.topAnchor),
             header.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
             header.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
-            header.heightAnchor.constraint(equalToConstant: topViewHeight)
+            headerRegularHeight,
+            headerFullscreenHeight
         ])
         pin(child: controller.view, to: foundation)
         ///
         func pin(child: UIView, to parent: UIView) {
             NSLayoutConstraint.activate([
-                child.topAnchor.constraint(equalTo: parent.topAnchor, constant: topViewHeight),
+                playerTopRegularHeight,
+                playerTopFullscreenHeight,
                 child.leadingAnchor.constraint(equalTo: parent.leadingAnchor),
                 child.trailingAnchor.constraint(equalTo: parent.trailingAnchor),
-                child.heightAnchor.constraint(equalToConstant: screenWidth * 9 / 16)
+                playerRegularHeight,
+                playerFullscreenHeight
             ])
         }
         ///
@@ -93,12 +121,12 @@ class ViewController: UIViewController {
         label.textColor = .black
         label.backgroundColor = .white
         
-        NSLayoutConstraint.activate([
-            label.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: 0),
-            label.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
-            label.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
-            label.topAnchor.constraint(equalTo: controller.view.bottomAnchor)
-        ])
+//        NSLayoutConstraint.activate([
+//            label.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: 0),
+//            label.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
+//            label.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
+//            label.topAnchor.constraint(equalTo: controller.view.bottomAnchor)
+//        ])
         ///
         foundation.backgroundColor = .black
     }
