@@ -23,8 +23,8 @@ class ViewController: UIViewController {
     func configureUI() {
         self.view.backgroundColor = .clear
         
-//        let screenWidth = self.view.window?.windowScene?.screen.bounds.width ?? 0
-//        let screenHeight = self.view.window?.windowScene?.screen.bounds.height ?? 0
+        let screenWidth = self.view.window?.windowScene?.screen.bounds.width ?? 0
+        let screenHeight = self.view.window?.windowScene?.screen.bounds.height ?? 0
         
         let label = UILabel(frame: .zero)
         let header = UILabel(frame: .zero)
@@ -38,7 +38,7 @@ class ViewController: UIViewController {
         headerRegularHeight.priority = UILayoutPriority(999)
         headerFullscreenHeight.priority = UILayoutPriority(998)
         ///
-        let labelRegularHeight = label.heightAnchor.constraint(equalToConstant: bottomViewHeight)
+        let labelRegularHeight = label.heightAnchor.constraint(equalToConstant: screenHeight - topViewHeight - screenWidth * 9 / 16)
         let labelFullscreenHeight = label.heightAnchor.constraint(equalToConstant: 0)
         
         labelRegularHeight.priority = UILayoutPriority(999)
