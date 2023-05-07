@@ -66,21 +66,27 @@ struct PlayerView: View {
                         
                         switch self.orientation {
                         case .landscapeLeft:
+                            self.fullscreen = true
                             self.angle = .degrees(90)
                             self.size = playerFullscreenSize
                             
                             if self.fullscreen {
+                                self.pxOffset = buffer / 2 - 44
                                 self.pyOffset = 0
                             }
-                            self.fullscreen = true
                         case .landscapeRight:
+                            self.fullscreen = true
                             self.angle = .degrees(-90)
                             self.size = playerFullscreenSize
                             
                             if self.fullscreen {
+                                let xPosition = self.originalSize.width + 44
+                                let offset = self.fullscreenSize.width - buffer / 2 - xPosition
+                                
+                                self.pxOffset = -offset
                                 self.pyOffset = 0
                             }
-                            self.fullscreen = true
+                            
                         case .portrait:
                             if self.fullscreen {
                                 self.changePlayerTransformWithOffsets(x: 0, y: (self.fullscreenSize.width - 44 - 34) / 2 - self.originalSize.height / 2)
@@ -156,17 +162,12 @@ struct PlayerView: View {
                                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                             }
                             .frame(width: 40, height: 40)
-                            .padding([.trailing, .bottom])
                         }
                         .frame(maxWidth: .infinity, maxHeight: 40, alignment: .bottom)
                     }
                     .rotationEffect(self.angle)
                 }
         }
-        .onAppear() {
-            print(self.size)
-        }
-        .border(.yellow)
     }
     
     struct Controls: View {
