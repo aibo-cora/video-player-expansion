@@ -43,24 +43,28 @@ class ViewController: UIViewController {
         
         let topViewHeight: CGFloat = 200
         let bottomViewHeight: CGFloat = 400
-        
+        ///
         let headerRegularHeight: NSLayoutConstraint = header.heightAnchor.constraint(equalToConstant: topViewHeight)
         let headerFullscreenHeight: NSLayoutConstraint = header.heightAnchor.constraint(equalToConstant: 0)
         
         headerRegularHeight.priority = UILayoutPriority(999)
         headerFullscreenHeight.priority = UILayoutPriority(998)
+        ///
+        let labelRegularHeight = label.heightAnchor.constraint(equalToConstant: bottomViewHeight)
+        let labelFullscreenHeight = label.heightAnchor.constraint(equalToConstant: 0)
         
+        labelRegularHeight.priority = UILayoutPriority(999)
+        labelFullscreenHeight.priority = UILayoutPriority(998)
+        ///
         let root = PlayerView(topViewHeight: topViewHeight, bottomViewHeight: bottomViewHeight) {
             if $0 {
                 headerFullscreenHeight.priority = UILayoutPriority(1000)
                 ///
-                self.playerFullscreenHeight.priority = UILayoutPriority(1000)
-                self.playerRegularHeight.priority = UILayoutPriority(998)
+                labelFullscreenHeight.priority = UILayoutPriority(1000)
             } else {
                 headerFullscreenHeight.priority = UILayoutPriority(998)
                 ///
-                self.playerRegularHeight.priority = UILayoutPriority(1000)
-                self.playerTopFullscreenHeight.priority = UILayoutPriority(998)
+                labelFullscreenHeight.priority = UILayoutPriority(998)
             }
         }
         
@@ -68,33 +72,11 @@ class ViewController: UIViewController {
         
         controller.view.backgroundColor = .black
         controller.view.translatesAutoresizingMaskIntoConstraints = false
-        /// Player - top.
-        self.playerTopRegularHeight = controller.view.topAnchor.constraint(equalTo: foundation.topAnchor, constant: topViewHeight)
-        self.playerTopFullscreenHeight = controller.view.topAnchor.constraint(equalTo: foundation.topAnchor, constant: 0)
-        
-        self.playerTopRegularHeight.priority = UILayoutPriority(999)
-        self.playerTopFullscreenHeight.priority = UILayoutPriority(998)
-        /// Player - height.
-        self.playerRegularHeight = controller.view.heightAnchor.constraint(equalToConstant: screenWidth * 9 / 16)
-        self.playerFullscreenHeight = controller.view.heightAnchor.constraint(equalToConstant: screenWidth * 16 / 9)
-        
-        self.playerRegularHeight.priority = UILayoutPriority(999)
-        self.playerFullscreenHeight.priority = UILayoutPriority(998)
-        
-        let flap = (screenHeight - screenWidth * 16 / 9) / 2
-        self.playerFullScreenTopConstraint = controller.view.topAnchor.constraint(equalTo: foundation.topAnchor, constant: 0)
-        self.playerFullScreenBottomConstraint = controller.view.bottomAnchor.constraint(equalTo: foundation.bottomAnchor, constant: 0)
-        
-        self.playerFullScreenTopConstraint.priority = UILayoutPriority(999)
-        self.playerFullScreenBottomConstraint.priority = UILayoutPriority(999)
-        ///
-        self.host = controller
-        
-        // self.view.addSubview(label)
-        
+
         self.view.addSubview(foundation)
         self.view.addSubview(header)
-        foundation.addSubview(controller.view)
+        self.view.addSubview(label)
+        self.view.addSubview(controller.view)
         ///
         
         header.text = "Header..."
@@ -102,7 +84,13 @@ class ViewController: UIViewController {
         header.textAlignment = .center
         header.textColor = .black
         header.backgroundColor = .white
-        
+        ///
+        label.text = "Testing..."
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.textAlignment = .center
+        label.textColor = .black
+        label.backgroundColor = .white
+        ///
         NSLayoutConstraint.activate([
             header.topAnchor.constraint(equalTo: self.view.topAnchor),
             header.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
@@ -110,33 +98,21 @@ class ViewController: UIViewController {
             headerRegularHeight,
             headerFullscreenHeight
         ])
-        pin(child: controller.view, to: foundation)
-        ///
-        func pin(child: UIView, to parent: UIView) {
-            NSLayoutConstraint.activate([
-                playerTopRegularHeight,
-                playerTopFullscreenHeight,
-                child.leadingAnchor.constraint(equalTo: parent.leadingAnchor),
-                child.trailingAnchor.constraint(equalTo: parent.trailingAnchor),
-                playerRegularHeight,
-                playerFullScreenTopConstraint,
-                playerFullScreenBottomConstraint
-            ])
-        }
-        
-        ///
-        label.text = "Testing..."
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.textAlignment = .center
-        label.textColor = .black
-        label.backgroundColor = .white
-        
-//        NSLayoutConstraint.activate([
-//            label.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: 0),
-//            label.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
-//            label.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
-//            label.topAnchor.constraint(equalTo: controller.view.bottomAnchor)
-//        ])
+        /// -
+        NSLayoutConstraint.activate([
+            controller.view.topAnchor.constraint(equalTo: header.bottomAnchor),
+            controller.view.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
+            controller.view.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
+            controller.view.bottomAnchor.constraint(equalTo: label.topAnchor)
+        ])
+        /// -
+        NSLayoutConstraint.activate([
+            labelRegularHeight,
+            labelFullscreenHeight,
+            label.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
+            label.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
+            label.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: 0),
+        ])
         ///
         foundation.backgroundColor = .gray
     }
