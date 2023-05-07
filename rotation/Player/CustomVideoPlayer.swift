@@ -20,7 +20,7 @@ struct CustomVideoPlayer: UIViewRepresentable {
         let view = UIView()
         let layer = AVPlayerLayer(player: self.player)
         
-        view.backgroundColor = .black
+        view.backgroundColor = .systemBackground
         view.layer.addSublayer(layer)
         
         layer.frame = CGRect(origin: .zero, size: self.size)

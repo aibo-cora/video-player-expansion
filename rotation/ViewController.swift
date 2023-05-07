@@ -27,6 +27,9 @@ class ViewController: UIViewController {
     
     var playerRegularHeight: NSLayoutConstraint!
     var playerFullscreenHeight: NSLayoutConstraint!
+    
+    var playerFullScreenTopConstraint: NSLayoutConstraint!
+    var playerFullScreenBottomConstraint: NSLayoutConstraint!
 
     func configureUI() {
         self.view.backgroundColor = .clear
@@ -52,13 +55,11 @@ class ViewController: UIViewController {
                 headerFullscreenHeight.priority = UILayoutPriority(1000)
                 ///
                 self.playerFullscreenHeight.priority = UILayoutPriority(1000)
-                self.playerTopFullscreenHeight.priority = UILayoutPriority(1000)
-                
-                self.host?.view.frame = CGRect(origin: .zero, size: CGSize(width: screenWidth, height: screenHeight))
+                self.playerRegularHeight.priority = UILayoutPriority(998)
             } else {
                 headerFullscreenHeight.priority = UILayoutPriority(998)
                 ///
-                self.playerFullscreenHeight.priority = UILayoutPriority(998)
+                self.playerRegularHeight.priority = UILayoutPriority(1000)
                 self.playerTopFullscreenHeight.priority = UILayoutPriority(998)
             }
         }
@@ -75,10 +76,17 @@ class ViewController: UIViewController {
         self.playerTopFullscreenHeight.priority = UILayoutPriority(998)
         /// Player - height.
         self.playerRegularHeight = controller.view.heightAnchor.constraint(equalToConstant: screenWidth * 9 / 16)
-        self.playerFullscreenHeight = controller.view.heightAnchor.constraint(equalToConstant: screenHeight)
+        self.playerFullscreenHeight = controller.view.heightAnchor.constraint(equalToConstant: screenWidth * 16 / 9)
         
         self.playerRegularHeight.priority = UILayoutPriority(999)
         self.playerFullscreenHeight.priority = UILayoutPriority(998)
+        
+        let flap = (screenHeight - screenWidth * 16 / 9) / 2
+        self.playerFullScreenTopConstraint = controller.view.topAnchor.constraint(equalTo: foundation.topAnchor, constant: 0)
+        self.playerFullScreenBottomConstraint = controller.view.bottomAnchor.constraint(equalTo: foundation.bottomAnchor, constant: 0)
+        
+        self.playerFullScreenTopConstraint.priority = UILayoutPriority(999)
+        self.playerFullScreenBottomConstraint.priority = UILayoutPriority(999)
         ///
         self.host = controller
         
@@ -111,9 +119,11 @@ class ViewController: UIViewController {
                 child.leadingAnchor.constraint(equalTo: parent.leadingAnchor),
                 child.trailingAnchor.constraint(equalTo: parent.trailingAnchor),
                 playerRegularHeight,
-                playerFullscreenHeight
+                playerFullScreenTopConstraint,
+                playerFullScreenBottomConstraint
             ])
         }
+        
         ///
         label.text = "Testing..."
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -128,7 +138,7 @@ class ViewController: UIViewController {
 //            label.topAnchor.constraint(equalTo: controller.view.bottomAnchor)
 //        ])
         ///
-        foundation.backgroundColor = .black
+        foundation.backgroundColor = .gray
     }
     
     var orientation: UIDeviceOrientation?

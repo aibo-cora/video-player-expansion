@@ -37,6 +37,7 @@ struct PlayerView: View {
     @Namespace var animation
     
     @State var fullscreen = false
+    @State var playing = true
     
     var body: some View {
         GeometryReader { geometry in
@@ -82,7 +83,7 @@ struct PlayerView: View {
                             
                             let playerOffset = self.topViewHeight + self.originalSize.height + (self.originalSize.width - self.originalSize.height) / 2
                             
-                            //self.pxOffset = -(playerWidthFullscreen - playerOffset + buffer / 2)
+                            self.pxOffset = -(playerWidthFullscreen - playerOffset + buffer / 2)
                             //self.pyOffset = -flap
                             
                             print("right")
@@ -117,9 +118,14 @@ struct PlayerView: View {
                         Spacer()
                         HStack {
                             Button {
-                                print("play")
+                                if self.playing {
+                                    self.player.pause()
+                                } else {
+                                    self.player.play()
+                                }
+                                self.playing.toggle()
                             } label: {
-                                Image(systemName: "play.fill")
+                                Image(systemName: self.playing ? "pause.fill" : "play.fill")
                                     .font(.title)
                                     .foregroundColor(.white)
                                     .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -132,9 +138,9 @@ struct PlayerView: View {
                         
                         HStack {
                             Button {
-                                print("play")
+                                
                             } label: {
-                                Image(systemName: "play.fill")
+                                Image(systemName: self.playing ? "pause.fill" : "play.fill")
                                     .foregroundColor(.white)
                                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                             }
@@ -147,7 +153,7 @@ struct PlayerView: View {
                                 
                                 withAnimation {
                                     if self.fullscreen {
-                                        self.centerPlayer()
+                                        // self.centerPlayer()
                                     }
                                 }
                             } label: {
@@ -166,7 +172,6 @@ struct PlayerView: View {
         .onAppear() {
             print(self.size)
         }
-        .frame(maxWidth: self.size.width, maxHeight: self.size.height)
         .border(.yellow)
     }
     
