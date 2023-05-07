@@ -19,27 +19,15 @@ class ViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         self.configureUI()
     }
-    
-    var host: UIHostingController<PlayerView>?
-    
-    var playerTopRegularHeight: NSLayoutConstraint!
-    var playerTopFullscreenHeight: NSLayoutConstraint!
-    
-    var playerRegularHeight: NSLayoutConstraint!
-    var playerFullscreenHeight: NSLayoutConstraint!
-    
-    var playerFullScreenTopConstraint: NSLayoutConstraint!
-    var playerFullScreenBottomConstraint: NSLayoutConstraint!
 
     func configureUI() {
         self.view.backgroundColor = .clear
         
-        let screenWidth = self.view.window?.windowScene?.screen.bounds.width ?? 0
-        let screenHeight = self.view.window?.windowScene?.screen.bounds.height ?? 0
+//        let screenWidth = self.view.window?.windowScene?.screen.bounds.width ?? 0
+//        let screenHeight = self.view.window?.windowScene?.screen.bounds.height ?? 0
         
         let label = UILabel(frame: .zero)
         let header = UILabel(frame: .zero)
-        let foundation = UIView(frame: CGRect(origin: .zero, size: CGSize(width: screenWidth, height: screenHeight)))
         
         let topViewHeight: CGFloat = 200
         let bottomViewHeight: CGFloat = 400
@@ -73,12 +61,10 @@ class ViewController: UIViewController {
         controller.view.backgroundColor = .black
         controller.view.translatesAutoresizingMaskIntoConstraints = false
 
-        self.view.addSubview(foundation)
         self.view.addSubview(header)
         self.view.addSubview(label)
         self.view.addSubview(controller.view)
         ///
-        
         header.text = "Header..."
         header.translatesAutoresizingMaskIntoConstraints = false
         header.textAlignment = .center
@@ -111,10 +97,8 @@ class ViewController: UIViewController {
             labelFullscreenHeight,
             label.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
             label.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
-            label.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: 0),
+            label.bottomAnchor.constraint(equalTo: self.view.bottomAnchor),
         ])
-        ///
-        foundation.backgroundColor = .gray
     }
     
     var orientation: UIDeviceOrientation?
