@@ -42,6 +42,7 @@ struct PlayerView: View {
     var body: some View {
         GeometryReader { geometry in
             CustomVideoPlayer(player: self.player, size: self.$size)
+                .border(Color.red)
                 .offset(x: self.pxOffset, y: self.pyOffset)
                 .frame(maxWidth: self.size.width, maxHeight: self.size.height)
                 .rotationEffect(self.angle)
@@ -68,29 +69,22 @@ struct PlayerView: View {
                             self.angle = .degrees(90)
                             self.size = playerFullscreenSize
                             
-                            let xCoordinate = self.topViewHeight - flap
-                            let offset = xCoordinate - buffer / 2
-                            
-                            self.pxOffset = -offset
-                            self.pyOffset = -flap
-                            
-                            print("left")
-                            
+                            if self.fullscreen {
+                                self.pyOffset = 0
+                            }
                             self.fullscreen = true
                         case .landscapeRight:
                             self.angle = .degrees(-90)
                             self.size = playerFullscreenSize
                             
-                            let playerOffset = self.topViewHeight + self.originalSize.height + (self.originalSize.width - self.originalSize.height) / 2
-                            
-                            self.pxOffset = -(playerWidthFullscreen - playerOffset + buffer / 2)
-                            //self.pyOffset = -flap
-                            
-                            print("right")
-                            
+                            if self.fullscreen {
+                                self.pyOffset = 0
+                            }
                             self.fullscreen = true
                         case .portrait:
-                            self.changePlayerTransformWithOffsets(x: 0, y: 0)
+                            if self.fullscreen {
+                                self.changePlayerTransformWithOffsets(x: 0, y: (self.fullscreenSize.width - 44 - 34) / 2 - self.originalSize.height / 2)
+                            }
                         default:
                             break
                         }
