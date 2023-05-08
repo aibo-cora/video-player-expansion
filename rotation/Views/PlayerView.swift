@@ -16,9 +16,6 @@ struct PlayerView: View {
     @State var pxOffset = 0.0
     @State var pyOffset = 0.0
     
-    @State var cxOffset = 0.0
-    @State var cyOffset = 0.0
-    
     @State var orientation: UIDeviceOrientation = .unknown
     
     let originalSize = CGSize(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.width * 9 / 16)
@@ -92,9 +89,6 @@ struct PlayerView: View {
                         }
                     }
                 }
-                .onChange(of: self.size, perform: { newValue in
-                    print(newValue)
-                })
                 .onChange(of: self.fullscreen) { fullscreen in
                     withAnimation(.easeInOut(duration: 0.5)) {
                         self.expand?(fullscreen)
@@ -114,7 +108,7 @@ struct PlayerView: View {
                         .foregroundColor(.white)
                         .frame(maxWidth: .infinity, maxHeight: 40, alignment: .top)
                         .border(Color.orange)
-                        .control(position: .topLeading, x: self.pxOffset, y: self.pyOffset)
+                        .control(position: .topLeading, angle: self.angle, fullscreen: self.fullscreen, x: self.pxOffset, y: self.pyOffset)
                         
                         Spacer()
                         
@@ -136,7 +130,7 @@ struct PlayerView: View {
                         }
                         .frame(maxWidth: .infinity, maxHeight: 40, alignment: .center)
                         .border(Color.orange)
-                        .control(position: .center, x: nil, y: nil)
+                        .control(position: .center, angle: self.angle, fullscreen: self.fullscreen, x: self.pxOffset, y: self.pyOffset)
                         
                         Spacer()
                         
@@ -179,17 +173,30 @@ struct PlayerView: View {
     
     struct ControlAlignment: ViewModifier {
         let position: UnitPoint
+        let angle: Angle
+        let fullscreen: Bool
         
         var x: CGFloat?
         var y: CGFloat?
         
         func body(content: Content) -> some View {
-            let xOffset = self.x ?? 0
-            let yOffset = self.y ?? 0
+            var xOffset = self.x ?? 0
+            var yOffset = self.y ?? 0
             
             switch self.position {
             case .topLeading:
                 break
+            case .center:
+                if self.fullscreen {
+                    if self.angle == .degrees(0) {
+                        break
+                    } else {
+                        let xPosition = 44 + UIScreen.main.bounds.width / 2
+                        let offset = UIScreen.main.bounds.height / 2 - xPosition
+                        
+                        xOffset = self.angle == .degrees(90) ? offset : -offset
+                    }
+                }
             default:
                 break
             }
@@ -221,8 +228,8 @@ struct PlayerView: View {
 
 @available(iOS 15.0, *)
 extension View {
-    func control(position: UnitPoint, x: CGFloat?, y: CGFloat?) -> some View {
-        modifier(PlayerView.ControlAlignment(position: position, x: x, y: y))
+    func control(position: UnitPoint, angle: Angle, fullscreen: Bool, x: CGFloat?, y: CGFloat?) -> some View {
+        modifier(PlayerView.ControlAlignment(position: position, angle: angle, fullscreen: fullscreen, x: x, y: y))
     }
 }
 
