@@ -42,9 +42,7 @@ struct PlayerView: View {
     var body: some View {
         GeometryReader { geometry in
             CustomVideoPlayer(player: self.player, size: self.$size)
-                .border(Color.red)
                 .offset(x: self.pxOffset, y: self.pyOffset)
-                .frame(maxWidth: self.size.width, maxHeight: self.size.height)
                 .rotationEffect(self.angle)
                 .onAppear() {
                     self.player.play()
@@ -54,13 +52,12 @@ struct PlayerView: View {
                     self.player.pause()
                 }
                 .onReceive(NotificationCenter.default.publisher(for: UIDevice.orientationDidChangeNotification)) { _ in
-                    withAnimation(.easeInOut(duration: 0.5)) {
+                    withAnimation(.easeInOut(duration: 0.25)) {
                         let playerWidthFullscreen = self.originalSize.width * 16 / 9
                         let playerHeightFullscreen = self.originalSize.width
                         
                         let buffer = self.fullscreenSize.width - playerWidthFullscreen /// Space not occupied by player.
                         let playerFullscreenSize = CGSize(width: playerWidthFullscreen, height: playerHeightFullscreen) /// 16:9
-                        let flap = (self.originalSize.width - self.originalSize.height) / 2
                         
                         self.orientation = UIDevice.current.orientation
                         
@@ -96,6 +93,9 @@ struct PlayerView: View {
                         }
                     }
                 }
+                .onChange(of: self.size, perform: { newValue in
+                    print(newValue)
+                })
                 .onChange(of: self.fullscreen) { fullscreen in
                     withAnimation(.easeInOut(duration: 0.5)) {
                         self.expand?(fullscreen)
@@ -114,8 +114,11 @@ struct PlayerView: View {
                         .padding([.top, .horizontal])
                         .foregroundColor(.white)
                         .frame(maxWidth: .infinity, maxHeight: 40, alignment: .top)
+                        .border(Color.orange)
+                        .offset(x: self.pxOffset, y: self.pyOffset)
                         
                         Spacer()
+                        
                         HStack {
                             Button {
                                 if self.playing {
@@ -133,6 +136,7 @@ struct PlayerView: View {
                             .frame(width: 40, height: 40)
                         }
                         .frame(maxWidth: .infinity, maxHeight: 40, alignment: .center)
+                        .border(Color.orange)
                         
                         Spacer()
                         
@@ -164,9 +168,12 @@ struct PlayerView: View {
                             .frame(width: 40, height: 40)
                         }
                         .frame(maxWidth: .infinity, maxHeight: 40, alignment: .bottom)
+                        .border(Color.orange)
                     }
                     .rotationEffect(self.angle)
                 }
+                .frame(maxWidth: self.size.width, maxHeight: self.size.height)
+                .border(Color.red)
         }
     }
     
