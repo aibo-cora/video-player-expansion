@@ -83,7 +83,6 @@ struct PlayerView: View {
                                 self.pxOffset = -offset
                                 self.pyOffset = 0
                             }
-                            
                         case .portrait:
                             if self.fullscreen {
                                 self.changePlayerTransformWithOffsets(x: 0, y: (self.fullscreenSize.width - 44 - 34) / 2 - self.originalSize.height / 2)
@@ -115,7 +114,7 @@ struct PlayerView: View {
                         .foregroundColor(.white)
                         .frame(maxWidth: .infinity, maxHeight: 40, alignment: .top)
                         .border(Color.orange)
-                        .offset(x: self.pxOffset, y: self.pyOffset)
+                        .control(position: .topLeading, x: self.pxOffset, y: self.pyOffset)
                         
                         Spacer()
                         
@@ -137,6 +136,7 @@ struct PlayerView: View {
                         }
                         .frame(maxWidth: .infinity, maxHeight: 40, alignment: .center)
                         .border(Color.orange)
+                        .control(position: .center, x: nil, y: nil)
                         
                         Spacer()
                         
@@ -177,9 +177,25 @@ struct PlayerView: View {
         }
     }
     
-    struct Controls: View {
-        var body: some View {
-            Text("")
+    struct ControlAlignment: ViewModifier {
+        let position: UnitPoint
+        
+        var x: CGFloat?
+        var y: CGFloat?
+        
+        func body(content: Content) -> some View {
+            let xOffset = self.x ?? 0
+            let yOffset = self.y ?? 0
+            
+            switch self.position {
+            case .topLeading:
+                break
+            default:
+                break
+            }
+            
+            return content
+                .offset(x: xOffset, y: yOffset)
         }
     }
     
@@ -200,6 +216,13 @@ struct PlayerView: View {
         
         self.pxOffset = x
         self.pyOffset = y
+    }
+}
+
+@available(iOS 15.0, *)
+extension View {
+    func control(position: UnitPoint, x: CGFloat?, y: CGFloat?) -> some View {
+        modifier(PlayerView.ControlAlignment(position: position, x: x, y: y))
     }
 }
 
