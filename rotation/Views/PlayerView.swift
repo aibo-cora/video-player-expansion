@@ -107,7 +107,6 @@ struct PlayerView: View {
                         .padding([.top, .horizontal])
                         .foregroundColor(.white)
                         .frame(maxWidth: .infinity, maxHeight: 40, alignment: .top)
-                        .border(Color.orange)
                         .control(position: .topLeading, angle: self.angle, fullscreen: self.fullscreen, x: self.pxOffset, y: self.pyOffset)
                         
                         Spacer()
@@ -129,37 +128,30 @@ struct PlayerView: View {
                             .frame(width: 40, height: 40)
                         }
                         .frame(maxWidth: .infinity, maxHeight: 40, alignment: .center)
-                        .border(Color.orange)
                         .control(position: .center, angle: self.angle, fullscreen: self.fullscreen, x: self.pxOffset, y: self.pyOffset)
                         
                         Spacer()
                         
                         HStack {
-                            Button {
-                                
-                            } label: {
-                                Image(systemName: self.playing ? "pause.fill" : "play.fill")
-                                    .foregroundColor(.white)
-                                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                            Group {
+                                Text("00:00")
+                                Slider(value: self.$progress)
+                                Text("00:00")
                             }
-                            .frame(width: 40, height: 40)
-                            
-                            Spacer()
+                            .padding([.trailing])
+                            .control(position: .bottomLeading, angle: self.angle, fullscreen: self.fullscreen, x: self.pxOffset, y: self.pyOffset)
                             
                             Button {
-                                self.fullscreen.toggle()
-                                
                                 withAnimation {
-                                    if self.fullscreen {
-                                        // self.centerPlayer()
-                                    }
+                                    self.fullscreen.toggle()
                                 }
                             } label: {
                                 Image(systemName: "star.fill")
-                                    .foregroundColor(.yellow)
+                                    .foregroundColor(.blue)
                                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                             }
                             .frame(width: 40, height: 40)
+                            .control(position: .bottomTrailing, angle: self.angle, fullscreen: self.fullscreen, x: self.pxOffset, y: self.pyOffset)
                         }
                         .frame(maxWidth: .infinity, maxHeight: 40, alignment: .bottom)
                         .border(Color.orange)
@@ -170,6 +162,8 @@ struct PlayerView: View {
                 .border(Color.red)
         }
     }
+    
+    @State private var progress = 0.0
     
     struct ControlAlignment: ViewModifier {
         let position: UnitPoint
@@ -195,6 +189,22 @@ struct PlayerView: View {
                         let offset = UIScreen.main.bounds.height / 2 - xPosition
                         
                         xOffset = self.angle == .degrees(90) ? offset : -offset
+                    }
+                }
+            case .bottomTrailing:
+                if self.fullscreen {
+                    if self.angle == .degrees(0) {
+                        break
+                    } else {
+                        let xPosition = 44 + UIScreen.main.bounds.width
+                        
+                        let playerWidth = UIScreen.main.bounds.width * 16 / 9
+                        let flap = (UIScreen.main.bounds.height - playerWidth) / 2
+                        let desired = UIScreen.main.bounds.height - flap
+                        
+                        let offset = desired - xPosition + 10
+                        print(offset)
+                        xOffset = self.angle == .degrees(90) ? offset : -20
                     }
                 }
             default:
